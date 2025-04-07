@@ -19,6 +19,14 @@ export default function GlobalStyle() {
           line-height: 1.5;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+
+          overflow: auto;
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE & Edge */
+
+          &::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+          }
         }
 
         a {

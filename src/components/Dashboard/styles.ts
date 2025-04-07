@@ -16,9 +16,24 @@ export const StyledTextarea = styled.textarea`
 
 export const MemoList = styled.div`
   margin-top: 20px;
+  display: grid;
+  gap: 10px;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  @media (max-width: 599px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export const MemoItem = styled.div`
+  width: 100%;
+  boxing-sizing: border-box;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -66,4 +81,21 @@ export const HiddenInput = styled.input`
   position: absolute;
   opacity: 0;
   pointer-events: none;
+`;
+
+export const Divider = styled.div`
+  margin: 16px 0 8px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  font-weight: bold;
+`;
+export const MemoGroup = styled.div`
+  background-color: #ffe4e1;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
 `;

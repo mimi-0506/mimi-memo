@@ -1,23 +1,17 @@
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { MemoType } from "../../types";
-import { MemoDate, MemoItem, MemoLeft, MemoText } from "./styles.ts";
-import { memosAtom } from "../../atoms/memoAtom.ts";
+import { MemoItem, MemoLeft, MemoText } from "./styles";
+import { memosAtom } from "../../atoms/memoAtom";
 
 export default function Memo({ memo }: { memo: MemoType }) {
-  const setMemos = useSetAtom(memosAtom);
+  const [, setMemos] = useAtom(memosAtom); // 값은 쓰기만 하므로 생략 가능
 
   const toggleCheck = () => {
-    setMemos((prev) => {
-      const updated = prev.map((i) =>
-        i.id === memo.id ? { ...memo, checked: !memo.checked } : i
-      );
-
-      const sorted = updated.sort((a, b) => {
-        return Number(a.checked) - Number(b.checked);
-      });
-
-      return sorted;
-    });
+    const updated = {
+      ...memo,
+      checked: !memo.checked,
+    };
+    setMemos(updated);
   };
 
   return (
@@ -26,7 +20,6 @@ export default function Memo({ memo }: { memo: MemoType }) {
         <input type="checkbox" checked={memo.checked} onChange={toggleCheck} />
         <MemoText checked={memo.checked}>{memo.text}</MemoText>
       </MemoLeft>
-      <MemoDate>{memo.date}</MemoDate>
     </MemoItem>
   );
 }
