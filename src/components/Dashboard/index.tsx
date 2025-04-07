@@ -1,6 +1,8 @@
 import Memo from "./Memo";
 
 import { fillMissingDates } from "../../utils/dateUtils";
+import useLoadMemos from "../../hook/useLoadMemos";
+import useSaveMemos from "../../hook/useSaveMemos";
 import styled from "@emotion/styled";
 import { useAtomValue } from "jotai";
 import { memosAtom } from "../../atoms/memoAtom";
@@ -35,6 +37,8 @@ const MemoList = styled.div`
 export default function Dashboard() {
   const memos = useAtomValue(memosAtom);
 
+  useLoadMemos();
+  useSaveMemos();
 
   return (
     <Wrapper>
