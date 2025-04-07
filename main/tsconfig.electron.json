@@ -9,5 +9,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["./main.ts", "./types.d.ts"]
+  "include": ["./main.ts", "../vite-env.d.ts"]
 }

@@ -12,13 +12,15 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "../preload/preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
     autoHideMenuBar: true,
   });
 
   if (import.meta.env?.DEV || process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
+    win.webContents.openDevTools();
   } else {
     win.loadFile(path.join(__dirname, "../index.html"));
   }
