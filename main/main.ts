@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import { fileURLToPath } from "url";
 
@@ -6,6 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.setPath("userData", path.join(app.getPath("appData"), "mimi-memo-cache"));
+
+ipcMain.on("app-close", () => {
+  app.quit();
+});
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -23,7 +27,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
   });
 
-  if (import.meta.env?.DEV || process.env.NODE_ENV === "dev") {
+  if (process.env.NODE_ENV || process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
     win.webContents.openDevTools();
   } else {
