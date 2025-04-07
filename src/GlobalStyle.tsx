@@ -27,16 +27,25 @@ export default function GlobalStyle() {
           &::-webkit-scrollbar {
             display: none; /* Chrome, Safari, Opera */
           }
+
+          margin: 0;
+          background: rgba(255, 255, 255, 0.01);
         }
 
         a {
           color: inherit;
           text-decoration: none;
+          -webkit-app-region: no-drag;
         }
 
         button {
           all: unset;
           cursor: pointer;
+          -webkit-app-region: no-drag;
+        }
+
+        input {
+          -webkit-app-region: no-drag;
         }
       `}
     />

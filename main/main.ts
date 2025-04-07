@@ -9,10 +9,15 @@ app.setPath("userData", path.join(app.getPath("appData"), "mimi-memo-cache"));
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
+    width: 400,
     height: 600,
+    transparent: true,
+    frame: false,
+    vibrancy: "appearance-based",
+    skipTaskbar: true,
     webPreferences: {
       nodeIntegration: true,
+      devTools: true,
       contextIsolation: false,
     },
     autoHideMenuBar: true,
@@ -24,6 +29,8 @@ const createWindow = () => {
   } else {
     win.loadFile(path.join(__dirname, "../index.html"));
   }
+
+  win.setIgnoreMouseEvents(false);
 };
 
 app.whenReady().then(createWindow);

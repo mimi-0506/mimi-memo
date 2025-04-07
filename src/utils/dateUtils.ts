@@ -1,4 +1,4 @@
-import { MemoType } from "../types";
+import { MemoType } from "../types/types";
 import { addDays, isBefore } from "date-fns";
 
 export const utilDateToString = (date: Date) => {

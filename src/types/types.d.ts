@@ -10,3 +10,5 @@ export type MemoDirectoryType = {
   memos: MemoType[];
   date: string;
 };
+
+export type AuthType = { uid: string; email: string | null };
