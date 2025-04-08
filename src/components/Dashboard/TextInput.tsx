@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useRef } from "react";
-import { MemoType } from "../../types/types";
+import { MemoType } from "../../../types/types";
 import { dateAtom, memosAtom } from "../../atoms/memoAtom";
 import { useAtomValue, useSetAtom } from "jotai";
 import { v4 as uuidv4 } from "uuid";

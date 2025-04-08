@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSetAtom } from "jotai";
-import { MemoType } from "../types/types";
 import { memosAtom } from "../atoms/memoAtom";
+import { MemoType } from "../../types/types";
 
 export default function useLoadMemos() {
   const setMemos = useSetAtom(memosAtom);

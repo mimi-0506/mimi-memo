@@ -1,7 +1,7 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useSetAtom } from "jotai";
 import { authAtom } from "../atoms/memoAtom";
-import { AuthType } from "../types/types";
+import { AuthType } from "../../types/types";
 
 export default function useAuth() {
   const setAuth = useSetAtom(authAtom);
@@ -13,7 +13,7 @@ export default function useAuth() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user: AuthType | null = result.user;
-      console.log("✅ Google 로그인 성공", user);
+      console.log("✅ Google 로그인 성공");
       setAuth(user);
     } catch (error) {
       console.error("❌ Google 로그인 실패", error);

@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { MemoType } from "../../types/types";
+import { MemoType } from "../../../types/types";
 import { memosAtom } from "../../atoms/memoAtom";
 import styled from "@emotion/styled";
 

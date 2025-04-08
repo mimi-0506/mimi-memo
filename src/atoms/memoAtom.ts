@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { AuthType, MemoType } from "../types/types";
+import { AuthType, MemoType } from "../../types/types";
 import { utilDateToString } from "../utils/dateUtils";
 
 const baseMemosAtom = atom<Map<string, MemoType[]>>(new Map());

@@ -2,8 +2,8 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { memosAtom } from "../atoms/memoAtom";
 import { debounce } from "lodash";
-import { MemoType } from "../types/types";
 import { addDoc, collection } from "firebase/firestore";
+import { MemoType } from "../../types/types";
 import { db } from "../firebase";
 
 export default function useSaveMemos() {

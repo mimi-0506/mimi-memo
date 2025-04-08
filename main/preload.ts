@@ -1,17 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { IpcChannels } from "../src/types/ipc";
-
-type IpcRendererTyped = {
-  send<K extends keyof IpcChannels>(channel: K, data: IpcChannels[K]): void;
-  on<K extends keyof IpcChannels>(
-    channel: K,
-    callback: (data: IpcChannels[K]) => void
-  ): void;
-  invoke<K extends keyof IpcChannels>(
-    channel: K,
-    data?: IpcChannels[K]
-  ): Promise<any>;
-};
+import { IpcListenerType, IpcRendererTyped } from "../types/ipc";
 
 const electronApi: { ipcRenderer: IpcRendererTyped } = {
   ipcRenderer: {
