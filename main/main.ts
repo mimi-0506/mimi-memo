@@ -2,9 +2,6 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 app.setPath("userData", path.join(app.getPath("appData"), "mimi-memo-cache"));
 
 ipcMain.on("app-close", () => {
@@ -20,21 +17,25 @@ const createWindow = () => {
     vibrancy: "appearance-based",
     skipTaskbar: true,
     webPreferences: {
-      nodeIntegration: true,
       devTools: true,
-      contextIsolation: false,
+      preload: path.join(__dirname, "preload.js"), // ✅ dist/main/preload.js 기준
+      contextIsolation: true,
+      nodeIntegration: false,
     },
     autoHideMenuBar: true,
   });
 
-  if (process.env.NODE_ENV || process.env.NODE_ENV === "dev") {
+  if (process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
     win.webContents.openDevTools();
   } else {
-    win.loadFile(path.join(__dirname, "../index.html"));
+    win.loadFile(path.join(__dirname, "../index.html")); // 📦 index.html 위치 확인!
   }
 
   win.setIgnoreMouseEvents(false);
 };
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  console.log("✅ App is ready!");
+  createWindow();
+});

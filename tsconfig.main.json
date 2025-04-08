@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "../dist/main",
-    "module": "ESNext",
+    "outDir": "./dist/main",
+    "module": "CommonJS",
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
     "moduleResolution": "node",
@@ -9,5 +9,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["./main.ts", "../vite-env.d.ts"]
+  "include": ["main/*.ts", "./vite-env.d.ts"]
 }

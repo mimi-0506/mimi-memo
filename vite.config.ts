@@ -7,10 +7,15 @@ export default defineConfig({
   root: "./",
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "src"),
+      preload: path.resolve(__dirname, "main/preload.ts"),
     },
   },
   build: {
     outDir: "dist",
+    rollupOptions: {
+      external: ["electron"], // <- 이거 꼭 필요!
+    },
   },
+  define: { "process.env": {} },
 });
