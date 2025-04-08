@@ -8,6 +8,8 @@ import { useAtomValue } from "jotai";
 import { memosAtom } from "../../atoms/memoAtom";
 import TextInput from "./TextInput";
 import DaySelector from "./DaySelector";
+import useLoadBounds from "../../hook/useLoadBounds";
+import useSaveBounds from "../../hook/useSaveBounds";
 
 export const Wrapper = styled.div`
   padding: 20px;
@@ -39,6 +41,8 @@ export default function Dashboard() {
 
   useLoadMemos();
   useSaveMemos();
+  useLoadBounds();
+  useSaveBounds();
 
   return (
     <Wrapper>
