@@ -1,4 +1,3 @@
-// scripts/kill-port.js
 const { exec } = require("child_process");
 const os = require("os");
 

@@ -1,21 +1,35 @@
 {
   "name": "mimi-memo",
+  "author": "mimi",
   "private": true,
   "version": "0.0.0",
+  "description": "mimi-memo",
+  "main": "dist/main/main.js",
   "scripts": {
     "kill": "node ./scripts/kill-port.js",
-    "build:main": "tsc -p ./tsconfig.main.json",
-    "electron": "tsc -p ./tsconfig.main.json && electron ./dist/main/main.js",
+    "dev": "npm-run-all kill build:main --parallel start:vite start:electron:dev",
     "start:vite": "vite",
     "start:electron": "wait-on http://localhost:5173 && npm run electron",
     "start:electron:dev": "wait-on http://localhost:5173 && cross-env NODE_ENV=dev electron dist/main/main.js",
-    "dev": "npm-run-all kill build:main --parallel start:vite start:electron:dev"
+    "build:main": "tsc -p ./tsconfig.main.json",
+    "build:ui": "vite build",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "npm-run-all build:main build:ui forge:make",
+    "forge:make": "electron-forge make"
+  },
+  "win": {
+    "target": "nsis",
+    "sign": false,
+    "certificateFile": null,
+    "certificatePassword": null
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "date-fns": "^4.1.0",
     "electron-is-dev": "^3.0.1",
+    "electron-squirrel-startup": "^1.0.1",
     "emotion-reset": "^3.0.1",
     "firebase": "^11.6.0",
     "jotai": "^2.12.2",
@@ -25,6 +39,14 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.8.0",
+    "@electron-forge/maker-deb": "^7.8.0",
+    "@electron-forge/maker-rpm": "^7.8.0",
+    "@electron-forge/maker-squirrel": "^7.8.0",
+    "@electron-forge/maker-zip": "^7.8.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.0",
+    "@electron-forge/plugin-fuses": "^7.8.0",
+    "@electron/fuses": "^1.8.0",
     "@eslint/js": "^9.21.0",
     "@types/lodash": "^4.17.16",
     "@types/react": "^19.0.10",
@@ -33,7 +55,6 @@
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "electron": "^35.1.4",
-    "electron-builder": "^26.0.12",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",

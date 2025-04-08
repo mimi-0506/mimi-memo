@@ -13,7 +13,6 @@ const createWindow = () => {
     transparent: true,
     frame: false,
     vibrancy: "appearance-based",
-    skipTaskbar: true,
     webPreferences: {
       // devTools: true,
       preload: path.join(__dirname, "preload.js"),
@@ -40,6 +39,8 @@ const createWindow = () => {
   win.on("resize", sendBoundsUpdate);
   win.on("move", sendBoundsUpdate);
   win.setIgnoreMouseEvents(false);
+  win.show();
+  win.setAlwaysOnTop(true);
 };
 
 ipcMain.on("apply-bounds", (_event, bounds: Rectangle) => {
