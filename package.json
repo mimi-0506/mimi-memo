@@ -2,14 +2,14 @@
   "name": "mimi-memo",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev concurrently \"vite\" \"wait-on http://localhost:5173 && npm run electron\"",
-    "electron": "tsc -p ./main/tsconfig.electron.json && electron ./dist/main/main.js",
-    "build": "vite build && electron-builder",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "kill": "powershell -Command \"Get-NetTCPConnection -LocalPort 5173,5174 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }\""
+    "kill": "powershell -Command \"Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; exit 0\"",
+    "build:main": "tsc -p ./tsconfig.main.json",
+    "electron": "tsc -p ./tsconfig.main.json && electron ./dist/main/main.js",
+    "start:vite": "vite",
+    "start:electron": "wait-on http://localhost:5173 && npm run electron",
+    "dev": "npm-run-all kill build:main --parallel start:vite start:electron:dev",
+    "start:electron:dev": "wait-on http://localhost:5173 && cross-env NODE_ENV=dev electron dist/main/main.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -38,6 +38,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "npm-run-all": "^4.1.5",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
