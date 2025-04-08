@@ -30,6 +30,11 @@ export default function GlobalStyle() {
 
           margin: 0;
           background: rgba(255, 255, 255, 0.01);
+
+          -webkit-user-select: none; /* Chrome, Safari */
+          -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* IE10+/Edge */
+          user-select: none; /* 표준 */
         }
 
         a {
