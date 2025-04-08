@@ -14,7 +14,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     rollupOptions: {
-      external: ["electron"], // <- 이거 꼭 필요!
+      external: ["electron"],
     },
   },
   define: { "process.env": {} },
