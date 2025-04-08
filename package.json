@@ -3,13 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "kill": "powershell -Command \"Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; exit 0\"",
+    "kill": "node ./scripts/kill-port.js",
     "build:main": "tsc -p ./tsconfig.main.json",
     "electron": "tsc -p ./tsconfig.main.json && electron ./dist/main/main.js",
     "start:vite": "vite",
     "start:electron": "wait-on http://localhost:5173 && npm run electron",
-    "dev": "npm-run-all kill build:main --parallel start:vite start:electron:dev",
-    "start:electron:dev": "wait-on http://localhost:5173 && cross-env NODE_ENV=dev electron dist/main/main.js"
+    "start:electron:dev": "wait-on http://localhost:5173 && cross-env NODE_ENV=dev electron dist/main/main.js",
+    "dev": "npm-run-all kill build:main --parallel start:vite start:electron:dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
