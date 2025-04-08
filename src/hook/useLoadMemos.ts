@@ -1,44 +1,38 @@
 import { useEffect } from "react";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useSetAtom } from "jotai";
-import { memosAtom } from "../atoms/memoAtom";
+import { useSetAtom, useAtomValue } from "jotai";
 import { MemoType } from "../../types/types";
+import { memosAtom, authAtom } from "../atoms/memoAtom";
 
 export default function useLoadMemos() {
   const setMemos = useSetAtom(memosAtom);
+  const user = useAtomValue(authAtom);
 
   useEffect(() => {
-    const fetchMemos = async () => {
+    if (!user) return;
+
+    const loadMemos = async () => {
       try {
-        const q = query(
-          collection(db, "memos"),
-          orderBy("createdAt", "desc"),
-          limit(1)
+        const docSnap = await getDoc(
+          doc(db, "users", user.uid, "memos", "latest")
         );
-        const querySnapshot = await getDocs(q);
 
-        if (!querySnapshot.empty) {
-          const latest = querySnapshot.docs[0].data();
-
-          if (latest.memos) {
-            const parsedObj = JSON.parse(latest.memos) as Record<
-              string,
-              MemoType[]
-            >;
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.memos) {
+            const parsedObj: Record<string, MemoType[]> = JSON.parse(
+              data.memos
+            );
             const map = new Map<string, MemoType[]>(Object.entries(parsedObj));
             setMemos(map);
-          } else {
-            console.warn("⚠️ 'memos' 필드가 존재하지 않음.");
-          }
-        } else {
-          console.info("ℹ️ memos 컬렉션이 비어 있음.");
-        }
+          } else console.warn("⚠️ 'memos' 필드가 존재하지 않음.");
+        } else console.info("ℹ️ memos 문서가 존재하지 않음.");
       } catch (e) {
-        console.error("❌ Firestore 불러오기 실패:", e);
+        console.error("❌ Firestore에서 memos 불러오기 실패:", e);
       }
     };
 
-    fetchMemos();
-  }, [setMemos]);
+    loadMemos();
+  }, [setMemos, user]);
 }

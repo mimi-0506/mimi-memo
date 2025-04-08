@@ -1,20 +1,23 @@
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-import { memosAtom } from "../atoms/memoAtom";
+import { authAtom, memosAtom } from "../atoms/memoAtom";
 import { debounce } from "lodash";
-import { addDoc, collection } from "firebase/firestore";
 import { MemoType } from "../../types/types";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function useSaveMemos() {
+  const user = useAtomValue(authAtom);
   const memos = useAtomValue(memosAtom);
 
   useEffect(() => {
+    if (!user || memos.size === 0) return;
     const saveMemos = debounce(async (memos: Map<string, MemoType[]>) => {
       try {
-        await addDoc(collection(db, "memos"), {
-          memos: JSON.stringify(Object.fromEntries(memos)),
-          createdAt: new Date(),
+        const memosObj = Object.fromEntries(memos);
+        await setDoc(doc(db, "users", user.uid, "memos", "latest"), {
+          memos: JSON.stringify(memosObj),
+          updatedAt: new Date(),
         });
       } catch (e) {
         console.error("❌ 저장 실패:", e);
@@ -24,5 +27,5 @@ export default function useSaveMemos() {
     saveMemos(memos);
 
     return () => saveMemos.cancel();
-  }, [memos]);
+  }, [user, memos]);
 }
