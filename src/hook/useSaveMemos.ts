@@ -5,27 +5,36 @@ import { debounce } from "lodash";
 import { MemoType } from "../../types/types";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { getLatestMemosDocRef } from "../lib/firestoreRefs";
 
+/**
+ * memos 상태가 변경될 때 Firebase에 저장하는 훅
+ */
 export default function useSaveMemos() {
   const user = useAtomValue(authAtom);
   const memos = useAtomValue(memosAtom);
 
   useEffect(() => {
     if (!user || memos.size === 0) return;
-    const saveMemos = debounce(async (memos: Map<string, MemoType[]>) => {
-      try {
-        const memosObj = Object.fromEntries(memos);
-        await setDoc(doc(db, "users", user.uid, "memos", "latest"), {
-          memos: JSON.stringify(memosObj),
-          updatedAt: new Date(),
-        });
-      } catch (e) {
-        console.error("❌ 저장 실패:", e);
-      }
-    }, 500);
 
-    saveMemos(memos);
+    const debouncedSaveMemos = debounce(
+      async (memos: Map<string, MemoType[]>) => {
+        try {
+          const memosObj = Object.fromEntries(memos);
 
-    return () => saveMemos.cancel();
+          await setDoc(getLatestMemosDocRef(user.uid), {
+            memos: JSON.stringify(memosObj),
+            updatedAt: new Date(),
+          });
+        } catch (error) {
+          console.error("memos 저장 실패", error);
+        }
+      },
+      500
+    );
+
+    debouncedSaveMemos(memos);
+
+    return () => debouncedSaveMemos.cancel();
   }, [user, memos]);
 }

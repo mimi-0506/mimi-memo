@@ -1,9 +1,12 @@
 import { useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { getDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { authAtom } from "../atoms/memoAtom";
+import { getLatestBoundsDocRef } from "../lib/firestoreRefs";
 
+/**
+ * Firestore에서 위치 및 창 크기 정보를 불러와 적용하는 훅
+ */
 export default function useLoadBounds() {
   const user = useAtomValue(authAtom);
 
@@ -12,20 +15,23 @@ export default function useLoadBounds() {
 
     const loadBounds = async () => {
       try {
-        const docSnap = await getDoc(
-          doc(db, "users", user.uid, "bounds", "latest")
-        );
+        const docSnap = await getDoc(getLatestBoundsDocRef(user.uid));
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          if (data.bounds) {
-            const parsed = JSON.parse(data.bounds);
-
-            window.electron?.ipcRenderer.send("apply-bounds", parsed);
-          }
+        if (!docSnap.exists()) {
+          console.info("ℹ️ bounds 문서가 존재하지 않음.");
+          return;
         }
-      } catch (e) {
-        console.error("❌ bounds 불러오기 실패:", e);
+
+        const data = docSnap.data();
+        if (!data.bounds) {
+          console.warn("⚠️ 'bounds' 필드가 존재하지 않음.");
+          return;
+        }
+
+        const parsedBounds = JSON.parse(data.bounds);
+        window.electron?.ipcRenderer.send("apply-bounds", parsedBounds);
+      } catch (error) {
+        console.error("bounds 불러오기 실패:", error);
       }
     };
 
