@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Rectangle } from "electron";
+import { app, BrowserWindow, ipcMain, Rectangle, shell } from "electron";
 import { debounce } from "lodash";
 import * as path from "path";
 
@@ -14,7 +14,7 @@ const createWindow = () => {
     frame: false,
     vibrancy: "appearance-based",
     webPreferences: {
-      // devTools: true,
+      devTools: true,
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
@@ -24,7 +24,7 @@ const createWindow = () => {
 
   if (process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
   } else {
     win.loadFile(path.join(__dirname, "../index.html"));
   }
@@ -52,6 +52,11 @@ ipcMain.on("apply-bounds", (_event, bounds: Rectangle) => {
 
 ipcMain.on("app-close", () => {
   app.quit();
+});
+
+ipcMain.handle("open-external", async (_event, url: string) => {
+  console.log("🌐 Opening external:", url);
+  return await shell.openExternal(url);
 });
 
 app.whenReady().then(() => {

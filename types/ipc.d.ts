@@ -36,3 +36,5 @@ export type IpcRendererTyped = {
     callback: (event: IpcRendererEvent, data: IpcChannelsType[K]) => void
   ): void;
 };
+
+export type OpenExternalType = (url: string) => Promise<void>;

@@ -1,20 +1,31 @@
-import { contextBridge, ipcRenderer } from "electron";
-import { IpcListenerType, IpcRendererTyped } from "../types/ipc";
+import {
+  contextBridge,
+  ipcRenderer,
+  IpcRendererEvent,
+  Rectangle,
+} from "electron";
+import {
+  IpcListenerType,
+  IpcRendererTyped,
+  OpenExternalType,
+} from "../types/ipc";
 
-const electronApi: { ipcRenderer: IpcRendererTyped } = {
+const { shell } = require("electron");
+
+const electronApi: {
+  ipcRenderer: IpcRendererTyped;
+  openExternal: OpenExternalType;
+} = {
   ipcRenderer: {
     send: (channel, data) => ipcRenderer.send(channel, data),
     on: (channel, callback) =>
       ipcRenderer.on(channel, (_event, data) => callback(data)),
     invoke: (channel, data) => ipcRenderer.invoke(channel, data),
     onBoundsChanged: (
-      callback: (
-        event: Electron.IpcRendererEvent,
-        bounds: Electron.Rectangle
-      ) => void
+      callback: (event: IpcRendererEvent, bounds: Rectangle) => void
     ) => {
       const wrapped: IpcListenerType = (event, data) => {
-        callback(event, data as Electron.Rectangle);
+        callback(event, data as Rectangle);
       };
 
       ipcRenderer.on("window-bounds-changed", wrapped);
@@ -27,6 +38,9 @@ const electronApi: { ipcRenderer: IpcRendererTyped } = {
     removeListener: (channel, callback) => {
       ipcRenderer.removeListener(channel, callback);
     },
+  },
+  openExternal: async (url: string) => {
+    await ipcRenderer.invoke("open-external", url);
   },
 };
 
