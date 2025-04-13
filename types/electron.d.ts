@@ -5,6 +5,7 @@ declare global {
     electron: {
       ipcRenderer: IpcRendererTyped;
       openExternal: OpenExternalType;
+      onAuthToken: OnAuthTokenType;
     };
   }
 }

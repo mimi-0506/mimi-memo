@@ -38,3 +38,4 @@ export type IpcRendererTyped = {
 };
 
 export type OpenExternalType = (url: string) => Promise<void>;
+export type OnAuthTokenType = (callback: (token: string) => void) => void;

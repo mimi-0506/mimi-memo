@@ -7,6 +7,7 @@ import {
 import {
   IpcListenerType,
   IpcRendererTyped,
+  OnAuthTokenType,
   OpenExternalType,
 } from "../types/ipc";
 
@@ -15,6 +16,7 @@ const { shell } = require("electron");
 const electronApi: {
   ipcRenderer: IpcRendererTyped;
   openExternal: OpenExternalType;
+  onAuthToken: OnAuthTokenType;
 } = {
   ipcRenderer: {
     send: (channel, data) => ipcRenderer.send(channel, data),
@@ -41,6 +43,11 @@ const electronApi: {
   },
   openExternal: async (url: string) => {
     await ipcRenderer.invoke("open-external", url);
+  },
+  onAuthToken: (callback: (token: string) => void) => {
+    ipcRenderer.on("auth-token", (_event, token) => {
+      callback(token);
+    });
   },
 };
 

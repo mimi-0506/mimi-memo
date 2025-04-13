@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
+import { getDoc } from "firebase/firestore";
 import { useSetAtom, useAtomValue } from "jotai";
 import { MemoType } from "../../types/types";
 import { memosAtom, authAtom } from "../atoms/memoAtom";
