@@ -32,7 +32,7 @@ const MemoText = styled.span<{ checked: boolean; important: boolean }>`
 `;
 
 export default function Memo({ memo }: { memo: MemoType }) {
-  const [, setMemos] = useAtom(memosAtom); // 값은 쓰기만 하므로 생략 가능
+  const [, setMemos] = useAtom(memosAtom);
 
   const toggleCheck = () => {
     const updated = {
@@ -42,6 +42,8 @@ export default function Memo({ memo }: { memo: MemoType }) {
     setMemos(updated);
   };
 
+  const memoDelete = () => {};
+
   return (
     <MemoItem>
       <MemoLeft>
@@ -50,6 +52,7 @@ export default function Memo({ memo }: { memo: MemoType }) {
           {memo.text}
         </MemoText>
       </MemoLeft>
+      <button onClick={memoDelete}>삭제</button>
     </MemoItem>
   );
 }

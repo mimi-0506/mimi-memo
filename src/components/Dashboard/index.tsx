@@ -13,6 +13,13 @@ import useSaveBounds from "../../hook/useSaveBounds";
 
 export const Wrapper = styled.div`
   padding: 20px;
+  height: 90%;
+
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
 `;
 
 const MemoGroup = styled.div`
