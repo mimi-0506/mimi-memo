@@ -1,65 +1,29 @@
-import { app, BrowserWindow, ipcMain, Rectangle, shell } from "electron";
-import { debounce } from "lodash";
-import * as path from "path";
+import { app } from "electron";
+import { createMainWindow, win } from "./window";
+import { setupIpc } from "./ipcHandlers";
+import { setupSingleInstance } from "./singleInstance";
 
-app.setPath("userData", path.join(app.getPath("appData"), "mimi-memo-cache"));
+let pendingToken: string | null = null;
 
-let win: BrowserWindow | null = null;
+//앱 여러 개 실행 방지
+if (!setupSingleInstance({ current: pendingToken })) {
+  app.quit();
+} else {
+  // 브라우저에서 mimi:// 링크를 열면 이 앱이 실행됨 = 수정시 브라우저도 같이 수정필요
+  app.setAsDefaultProtocolClient("mimi");
 
-const createWindow = () => {
-  win = new BrowserWindow({
-    width: 400,
-    height: 600,
-    transparent: true,
-    frame: false,
-    vibrancy: "appearance-based",
-    webPreferences: {
-      devTools: true,
-      preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-    autoHideMenuBar: true,
+  // 브라우저에서 mimi://?token=xxx 형태로 보낸 토큰 받아옴
+  app.on("open-url", (event, url) => {
+    event.preventDefault();
+    const parsed = new URL(url);
+    const token = parsed.searchParams.get("token");
+    if (token && win) {
+      win.webContents.send("auth-token", token);
+    }
   });
 
-  if (process.env.NODE_ENV === "dev") {
-    win.loadURL("http://localhost:5173");
-    win.webContents.openDevTools();
-  } else {
-    win.loadFile(path.join(__dirname, "../index.html"));
-  }
-
-  const sendBoundsUpdate = debounce(() => {
-    if (win) {
-      const bounds = win.getBounds();
-      win.webContents.send("window-bounds-changed", bounds);
-    }
-  }, 1000);
-
-  win.on("resize", sendBoundsUpdate);
-  win.on("move", sendBoundsUpdate);
-  win.setIgnoreMouseEvents(false);
-  win.show();
-  win.setAlwaysOnTop(true);
-};
-
-ipcMain.on("apply-bounds", (_event, bounds: Rectangle) => {
-  if (win && bounds) {
-    console.log("📦 apply-bounds 수신:", bounds);
-    win.setBounds(bounds);
-  }
-});
-
-ipcMain.on("app-close", () => {
-  app.quit();
-});
-
-ipcMain.handle("open-external", async (_event, url: string) => {
-  console.log("🌐 Opening external:", url);
-  return await shell.openExternal(url);
-});
-
-app.whenReady().then(() => {
-  console.log("✅ App is ready!");
-  createWindow();
-});
+  app.whenReady().then(() => {
+    const browserWindow = createMainWindow(pendingToken);
+    setupIpc(browserWindow);
+  });
+}
