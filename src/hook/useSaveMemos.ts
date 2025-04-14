@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { authAtom, memosAtom } from "../atoms/memoAtom";
 import { debounce } from "lodash";
 import { MemoType } from "../../types/types";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { setDoc } from "firebase/firestore";
 import { getLatestMemosDocRef } from "../lib/firestoreRefs";
 
 /**

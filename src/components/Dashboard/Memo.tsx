@@ -1,6 +1,10 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { MemoType } from "../../../types/types";
-import { memosAtom } from "../../atoms/memoAtom";
+import {
+  deleteMemoAtom,
+  memosAtom,
+  toggleCheckedAtom,
+} from "../../atoms/memoAtom";
 import styled from "@emotion/styled";
 
 const MemoItem = styled.div`
@@ -32,27 +36,34 @@ const MemoText = styled.span<{ checked: boolean; important: boolean }>`
 `;
 
 export default function Memo({ memo }: { memo: MemoType }) {
-  const [, setMemos] = useAtom(memosAtom);
+  const toggleChecked = useSetAtom(toggleCheckedAtom);
+  const memoDelete = useSetAtom(deleteMemoAtom);
 
-  const toggleCheck = () => {
+  const handleCheckClick = () => {
     const updated = {
       ...memo,
       checked: !memo.checked,
     };
-    setMemos(updated);
+    toggleChecked(updated);
   };
 
-  const memoDelete = () => {};
+  const handleMemoDeleteClick = () => {
+    memoDelete(memo);
+  };
 
   return (
     <MemoItem>
       <MemoLeft>
-        <input type="checkbox" checked={memo.checked} onChange={toggleCheck} />
+        <input
+          type="checkbox"
+          checked={memo.checked}
+          onChange={handleCheckClick}
+        />
         <MemoText checked={memo.checked} important={memo.important}>
           {memo.text}
         </MemoText>
       </MemoLeft>
-      <button onClick={memoDelete}>삭제</button>
+      <button onClick={handleMemoDeleteClick}>삭제</button>
     </MemoItem>
   );
 }

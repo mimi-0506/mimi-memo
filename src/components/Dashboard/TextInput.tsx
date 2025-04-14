@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import { useRef } from "react";
 import { MemoType } from "../../../types/types";
-import { dateAtom, memosAtom } from "../../atoms/memoAtom";
-import { useAtomValue, useSetAtom } from "jotai";
+import { addMemoAtom, dateAtom, memosAtom } from "../../atoms/memoAtom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { v4 as uuidv4 } from "uuid";
+import { parseDateText } from "../../utils/dateUtils";
 
 export const StyledTextarea = styled.textarea`
   width: 100%;
@@ -16,7 +17,7 @@ export const StyledTextarea = styled.textarea`
 `;
 
 export default function TextInput() {
-  const setMemos = useSetAtom(memosAtom);
+  const addMemo = useSetAtom(addMemoAtom);
   const date = useAtomValue(dateAtom);
   const textRef = useRef<HTMLTextAreaElement>(null);
 
@@ -39,7 +40,7 @@ export default function TextInput() {
             id: uuidv4(),
           };
 
-          setMemos(newMemo);
+          addMemo(newMemo);
           textRef.current.value = "";
         }
       }

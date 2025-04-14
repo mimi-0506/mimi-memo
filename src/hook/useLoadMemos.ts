@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getDoc } from "firebase/firestore";
 import { useSetAtom, useAtomValue } from "jotai";
 import { MemoType } from "../../types/types";
-import { memosAtom, authAtom } from "../atoms/memoAtom";
+import { authAtom, loadMemosAtom } from "../atoms/memoAtom";
 import { getLatestMemosDocRef } from "../lib/firestoreRefs";
 
 /**
@@ -10,7 +10,7 @@ import { getLatestMemosDocRef } from "../lib/firestoreRefs";
  * user별로 초기 1회만 진행
  */
 export default function useLoadMemos() {
-  const setMemos = useSetAtom(memosAtom);
+  const setLoadMemos = useSetAtom(loadMemosAtom);
   const user = useAtomValue(authAtom);
 
   useEffect(() => {
@@ -36,12 +36,12 @@ export default function useLoadMemos() {
 
         const parsed: Record<string, MemoType[]> = JSON.parse(raw);
         const mapped = new Map(Object.entries(parsed));
-        setMemos(mapped);
+        setLoadMemos(mapped);
       } catch (error) {
         console.error("memos 불러오기 실패", error);
       }
     };
 
     loadMemos();
-  }, [user, setMemos]);
+  }, [user, setLoadMemos]);
 }
