@@ -1,10 +1,6 @@
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { MemoType } from "../../../types/types";
-import {
-  deleteMemoAtom,
-  memosAtom,
-  toggleCheckedAtom,
-} from "../../atoms/memoAtom";
+import { deleteMemoAtom, toggleCheckedAtom } from "../../atoms/memoAtom";
 import styled from "@emotion/styled";
 
 const MemoItem = styled.div`

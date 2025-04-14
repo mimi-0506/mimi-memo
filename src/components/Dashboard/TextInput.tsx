@@ -5,6 +5,7 @@ import { addMemoAtom, dateAtom, memosAtom } from "../../atoms/memoAtom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { v4 as uuidv4 } from "uuid";
 import { parseDateText, utilDateToString } from "../../utils/dateUtils";
+import { createMemoFromInput } from "../../utils/inputUtils";
 
 export const StyledTextarea = styled.textarea`
   width: 100%;
@@ -26,37 +27,9 @@ export default function TextInput() {
       e.preventDefault();
 
       if (textRef.current) {
-        let input = textRef.current.value.trim();
-        let inputDate = date;
-
-        if (input !== "") {
-          const isImportant = input.startsWith("!");
-          if (isImportant) input = input.slice(1).trim();
-
-          const isDateText = input.startsWith("@");
-          if (isDateText) {
-            const match = input.match(/^@(\d{4})\s*(.*)$/);
-            if (match) {
-              const [, mmdd, rest] = match;
-              const month = mmdd.slice(0, 2);
-              const day = mmdd.slice(2, 4);
-
-              inputDate = utilDateToString(parseDateText(`${month}/${day}`));
-              input = rest.trim();
-            }
-          }
-
-          const newMemo: MemoType = {
-            text: input,
-            date: inputDate,
-            checked: false,
-            important: isImportant,
-            id: uuidv4(),
-          };
-
-          addMemo(newMemo);
-          textRef.current.value = "";
-        }
+        const newMemo = createMemoFromInput(textRef.current.value.trim(), date);
+        if (newMemo) addMemo(newMemo);
+        textRef.current.value = "";
       }
     }
   };
