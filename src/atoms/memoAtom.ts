@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { AuthType, MemoType } from "../../types/types";
 import { utilDateToString } from "../utils/dateUtils";
-import { updateMemoMap } from "../utils/memoUtils";
+import { deleteEmptyDatesCascade, updateMemoMap } from "../utils/memoUtils";
 
 // ✅ 1. 상태 저장 atom
 export const baseMemosAtom = atom<Map<string, MemoType[]>>(new Map());
@@ -50,10 +50,21 @@ export const toggleCheckedAtom = atom(null, (get, set, target: MemoType) => {
 
 // ✅ 6. 메모 삭제 액션 atom
 export const deleteMemoAtom = atom(null, (get, set, target: MemoType) => {
-  const result = updateMemoMap(get(baseMemosAtom), target.date, (prev) =>
-    prev.filter((m) => m.id !== target.id)
-  );
-  set(baseMemosAtom, result);
+  const originalMap = get(baseMemosAtom);
+
+  const updatedMap = new Map(originalMap);
+  const currentList = updatedMap.get(target.date) ?? [];
+  const nextList = currentList.filter((m) => m.id !== target.id);
+
+  updatedMap.set(target.date, nextList);
+
+  // 삭제 후 비어있다면 연쇄 삭제 실행
+  const finalMap =
+    nextList.length === 0
+      ? deleteEmptyDatesCascade(updatedMap, target.date)
+      : updatedMap;
+
+  set(baseMemosAtom, finalMap);
 });
 
 // ✅ 9. 전체 초기화 액션 atom
