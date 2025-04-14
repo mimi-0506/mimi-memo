@@ -1,54 +1,52 @@
-# React + TypeScript + Vite
+# 📝 mimi-memo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🚀 주요 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ 날짜별 메모 작성 및 표시
+- ✅ 오늘 날짜/수정 일자로 자동 스크롤
+- ✅ 연속된 빈 날짜 자동 삭제
+- ✅ Firebase 기반 사용자 인증 및 데이터 동기화
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✍️ 첫글자 단축 키워드 가이드
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+| 입력    | 설명                               |
+| ------- | ---------------------------------- |
+| `@0506` | 메모 날짜를 5월 6일로 지정         |
+| `!`     | 해당 메모를 중요 표시              |
+| `#`     | 날짜와 관련없는 메모 인덱스 추가가 |
+
+예: `!@0506 회의 준비하기` → 5월 6일 중요 메모로 등록
+
+---
+
+## 🏗️ 기술 스택
+
+| 영역           | 스택                            |
+| -------------- | ------------------------------- |
+| 💻 데스크탑 앱 | Electron + Vite + React 19 + TS |
+| 🎨 UI          | Emotion Styled                  |
+| 📦 상태 관리   | Jotai                           |
+| 🔥 Auth, DB    | Firebase Auth, Firestore        |
+| 🧠 유틸        | date-fns, lodash                |
+
+---
+
+## 🧪 개발용 실행
+
+```bash
+# 개발 서버 시작
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 배포/빌드
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+# 빌드
+npm run make
 ```
