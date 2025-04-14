@@ -7,3 +7,14 @@ export const sortMemos = (memos: MemoType[]) => {
     return a.text.localeCompare(b.text, "ko");
   });
 };
+
+export const updateMemoMap = (
+  map: Map<string, MemoType[]>,
+  date: string,
+  updater: (prev: MemoType[]) => MemoType[]
+): Map<string, MemoType[]> => {
+  const updated = new Map(map);
+  const list = [...(map.get(date) ?? [])];
+  updated.set(date, sortMemos(updater(list)));
+  return updated;
+};

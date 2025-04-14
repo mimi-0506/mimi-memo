@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { AuthType, MemoType } from "../../types/types";
 import { utilDateToString } from "../utils/dateUtils";
-import { sortMemos } from "../utils/memoUtils";
+import { updateMemoMap } from "../utils/memoUtils";
 
 // ✅ 1. 상태 저장 atom
 export const baseMemosAtom = atom<Map<string, MemoType[]>>(new Map());
@@ -11,43 +11,49 @@ export const memosAtom = atom((get) => get(baseMemosAtom));
 
 // ✅ 3. 메모 추가 atom
 export const addMemoAtom = atom(null, (get, set, newMemo: MemoType) => {
-  const prev = new Map(get(baseMemosAtom));
-  const memos = [...(prev.get(newMemo.date) ?? [])];
-  memos.push(newMemo);
-  prev.set(newMemo.date, sortMemos(memos));
-  set(baseMemosAtom, prev);
+  console.log("addMemo");
+  const updated = updateMemoMap(get(baseMemosAtom), newMemo.date, (prev) => [
+    ...prev,
+    newMemo,
+  ]);
+  set(baseMemosAtom, updated);
 });
 
 // ✅ 4. 메모 수정 atom
 export const editMemoAtom = atom(null, (get, set, updatedMemo: MemoType) => {
-  const prev = new Map(get(baseMemosAtom));
-  const memos = [...(prev.get(updatedMemo.date) ?? [])];
-  const idx = memos.findIndex((m) => m.id === updatedMemo.id);
-  if (idx === -1) return;
-  memos[idx] = updatedMemo;
-  prev.set(updatedMemo.date, sortMemos(memos));
-  set(baseMemosAtom, prev);
+  const updated = updateMemoMap(
+    get(baseMemosAtom),
+    updatedMemo.date,
+    (prev) => {
+      const idx = prev.findIndex((m) => m.id === updatedMemo.id);
+      if (idx === -1) return prev;
+      const clone = [...prev];
+      clone[idx] = updatedMemo;
+      return clone;
+    }
+  );
+  set(baseMemosAtom, updated);
 });
 
 // ✅ 5. 체크 토글 액션 atom
 export const toggleCheckedAtom = atom(null, (get, set, target: MemoType) => {
   const updated = { ...target, checked: !target.checked };
-  const prev = new Map(get(baseMemosAtom));
-  const memos = [...(prev.get(updated.date) ?? [])];
-  const idx = memos.findIndex((m) => m.id === updated.id);
-  if (idx === -1) return;
-  memos[idx] = updated;
-  prev.set(updated.date, sortMemos(memos));
-  set(baseMemosAtom, prev);
+  const result = updateMemoMap(get(baseMemosAtom), updated.date, (prev) => {
+    const idx = prev.findIndex((m) => m.id === updated.id);
+    if (idx === -1) return prev;
+    const clone = [...prev];
+    clone[idx] = updated;
+    return clone;
+  });
+  set(baseMemosAtom, result);
 });
 
 // ✅ 6. 메모 삭제 액션 atom
 export const deleteMemoAtom = atom(null, (get, set, target: MemoType) => {
-  const prev = new Map(get(baseMemosAtom));
-  const memos = [...(prev.get(target.date) ?? [])];
-  const updated = memos.filter((m) => m.id !== target.id);
-  prev.set(target.date, updated);
-  set(baseMemosAtom, prev);
+  const result = updateMemoMap(get(baseMemosAtom), target.date, (prev) =>
+    prev.filter((m) => m.id !== target.id)
+  );
+  set(baseMemosAtom, result);
 });
 
 // ✅ 9. 전체 초기화 액션 atom
