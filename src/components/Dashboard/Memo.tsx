@@ -40,11 +40,7 @@ export default function Memo({ memo }: { memo: MemoType }) {
   const memoDelete = useSetAtom(deleteMemoAtom);
 
   const handleCheckClick = () => {
-    const updated = {
-      ...memo,
-      checked: !memo.checked,
-    };
-    toggleChecked(updated);
+    toggleChecked(memo);
   };
 
   const handleMemoDeleteClick = () => {

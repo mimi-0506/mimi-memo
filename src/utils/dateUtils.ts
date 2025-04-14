@@ -64,3 +64,31 @@ export const fillMissingDates = (memosMap: Map<string, MemoType[]>) => {
 
   return filledEntries;
 };
+
+/**
+ * MM/DD 형식의 문자열을 현재 연도를 기준으로 한 Date 객체로 변환합니다.
+ *
+ * @param input - 'MM/DD' 형식의 문자열 (예: '05/06')
+ * @returns 변환된 Date 객체 (ex. new Date(2025, 4, 6))
+ *
+ * @example
+ * parseDateText("05/06"); // → new Date(2025, 4, 6)
+ *
+ * @description
+ * - 숫자가 아닌 값이 포함되어 있거나 형식이 잘못되면 예외를 throw합니다.
+ */
+export const parseDateText = (input: string): Date => {
+  try {
+    const [month, day] = input.split("/").map(Number);
+
+    const now = new Date();
+    const year = now.getFullYear();
+
+    const date = new Date(year, month - 1, day);
+
+    return date;
+  } catch (err) {
+    console.error("📅 parseDateText 실패:", err);
+    throw err;
+  }
+};
