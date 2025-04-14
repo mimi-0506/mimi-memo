@@ -29,7 +29,13 @@ export default function GlobalStyle() {
           }
 
           margin: 0;
-          background: rgba(255, 255, 255, 0.01);
+          background: rgba(255, 255, 255, 0);
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
 
           -webkit-user-select: none; /* Chrome, Safari */
           -moz-user-select: none; /* Firefox */

@@ -13,13 +13,33 @@ import useSaveBounds from "../../hook/useSaveBounds";
 
 export const Wrapper = styled.div`
   padding: 20px;
-  height: 90%;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  overflow: hidden;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 100%;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  scrollbar-gutter: stable both-edges;
 `;
 
 const MemoGroup = styled.div`

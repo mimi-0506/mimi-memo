@@ -11,6 +11,9 @@ export const HeaderLayout = styled.header`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  box-sizing: border-box;
+  padding: 10px;
 `;
 
 export default function Header() {
@@ -20,7 +23,7 @@ export default function Header() {
 
   return (
     <HeaderLayout>
-      <button onClick={handleClose}>닫기</button>
+      <button onClick={handleClose}>x</button>
     </HeaderLayout>
   );
 }
