@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { AuthType, MemoType } from "../../types/types";
-import { utilDateToString } from "../utils/dateUtils";
+import { fillMissingDates, utilDateToString } from "../utils/dateUtils";
 import { deleteEmptyDatesCascade, updateMemoMap } from "../utils/memoUtils";
 
 // ✅ 1. 상태 저장 atom
@@ -11,12 +11,22 @@ export const memosAtom = atom((get) => get(baseMemosAtom));
 
 // ✅ 3. 메모 추가 atom
 export const addMemoAtom = atom(null, (get, set, newMemo: MemoType) => {
-  console.log("addMemo");
-  const updated = updateMemoMap(get(baseMemosAtom), newMemo.date, (prev) => [
+  const currentMap = get(baseMemosAtom);
+  const hasDate = currentMap.has(newMemo.date);
+
+  const updated = updateMemoMap(currentMap, newMemo.date, (prev) => [
     ...prev,
     newMemo,
   ]);
-  set(baseMemosAtom, updated);
+
+  // 기존에 없던 날짜라면, fillMissingDates를 통해 누락된 날짜 채움
+  if (!hasDate) {
+    const filledEntries = fillMissingDates(updated);
+    const filledMap = new Map(filledEntries);
+    set(baseMemosAtom, filledMap);
+  } else {
+    set(baseMemosAtom, updated);
+  }
 });
 
 // ✅ 4. 메모 수정 atom
@@ -65,6 +75,17 @@ export const deleteMemoAtom = atom(null, (get, set, target: MemoType) => {
       : updatedMap;
 
   set(baseMemosAtom, finalMap);
+});
+
+// ✅ 7. 빈 메모 배열을 가진 날짜 제거
+export const deleteEmptyAtom = atom(null, (get, set) => {
+  const currentMap = get(baseMemosAtom);
+  const cleanedMap = new Map(
+    Array.from(currentMap.entries()).filter(([_, memos]) => memos.length > 0)
+  );
+  console.log(cleanedMap);
+
+  set(baseMemosAtom, cleanedMap);
 });
 
 // ✅ 9. 전체 초기화 액션 atom

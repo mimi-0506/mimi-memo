@@ -6,6 +6,8 @@ import useSaveMemos from "../../hook/useSaveMemos";
 import styled from "@emotion/styled";
 import { useAtomValue } from "jotai";
 import { memosAtom } from "../../atoms/memoAtom";
+import { useAtomValue, useSetAtom } from "jotai";
+import { dateAtom, deleteEmptyAtom, memosAtom } from "../../atoms/memoAtom";
 import TextInput from "./TextInput";
 import DaySelector from "./DaySelector";
 import useLoadBounds from "../../hook/useLoadBounds";
@@ -65,6 +67,8 @@ const MemoList = styled.div`
 
 export default function Dashboard() {
   const memos = useAtomValue(memosAtom);
+  const setDate = useSetAtom(dateAtom);
+  const deleteEmpty = useSetAtom(deleteEmptyAtom);
 
   useLoadMemos();
   useSaveMemos();
@@ -73,17 +77,18 @@ export default function Dashboard() {
 
   return (
     <Wrapper>
-      <DaySelector />
       <TextInput />
       <MemoList>
-        {fillMissingDates(memos).map(([date, memos]) => (
-          <MemoGroup key={date}>
-            {date}
-            {memos.map((memo) => (
-              <Memo key={memo.id} memo={memo} />
-            ))}
-          </MemoGroup>
-        ))}
+        {Array.from(memos.entries())
+          .sort()
+          .map(([date, memos]) => (
+            <MemoGroup key={date}>
+                {date}
+              {memos.map((memo) => (
+                <Memo key={memo.id} memo={memo} />
+              ))}
+            </MemoGroup>
+          ))}
       </MemoList>
     </Wrapper>
   );
