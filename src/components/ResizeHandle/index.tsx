@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import throttle from "lodash/throttle";
-
-type Direction = "bottom" | "right";
+import { Direction } from "../../../types/types";
 
 const RightEdge = styled.div`
   position: absolute;

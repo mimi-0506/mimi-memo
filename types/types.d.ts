@@ -12,3 +12,5 @@ export type MemoDirectoryType = {
 };
 
 export type AuthType = { uid: string; email: string | null };
+
+export type Direction = "bottom" | "right";
