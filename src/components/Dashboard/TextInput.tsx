@@ -12,6 +12,7 @@ export const StyledTextarea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: inherit;
+  height: 80px;
 `;
 
 export default function TextInput() {

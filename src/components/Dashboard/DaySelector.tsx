@@ -4,12 +4,9 @@ import { useAtom } from "jotai";
 import { dateAtom } from "../../atoms/memoAtom";
 import styled from "@emotion/styled";
 
-export const SelectorWrapper = styled.button`
-  margin-bottom: 1rem;
-`;
+export const SelectorWrapper = styled.button``;
 
 export const DateDisplay = styled.div`
-  margin-top: 50px;
   display: inline-block;
   padding: 8px 12px;
   background-color: #eee;
