@@ -41,10 +41,15 @@ export function createMainWindow(pendingToken: string | null) {
     }
   });
 
+  //메인 프로세스에서 렌더러 프로세스 에러 감지
+  win.webContents.on("render-process-gone", (event, details) => {
+    console.error("💥 렌더러 프로세스 사망:", details);
+  });
+
   //배포 상태---------------------------------------------------
   if (process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
-    //    win.webContents.openDevTools();
+    //   win.webContents.openDevTools({ mode: "detach" });
   } else {
     win.loadFile(path.join(__dirname, "../index.html"));
   }
