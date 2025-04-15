@@ -10,6 +10,7 @@ import TextInput from "./TextInput";
 import DaySelector from "./DaySelector";
 import useLoadBounds from "../../hook/useLoadBounds";
 import useSaveBounds from "../../hook/useSaveBounds";
+import ResizeHandle from "../ResizeHandle";
 
 export const Wrapper = styled.div`
   padding: 20px;
@@ -73,6 +74,7 @@ export default function Dashboard() {
 
   return (
     <Wrapper>
+      <ResizeHandle />
       <DaySelector />
       <TextInput />
       <MemoList>

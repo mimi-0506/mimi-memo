@@ -14,6 +14,7 @@ export const HeaderLayout = styled.header`
 
   box-sizing: border-box;
   padding: 10px;
+  z-index: 9999;
 `;
 
 export default function Header() {
