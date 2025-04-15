@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import DateSection from "./DateSection";
 import { useAtomValue } from "jotai";
 import { memosAtom } from "../../../atoms/memoAtom";
+import DateSection from "./DateSection";
 
 const MemoList = styled.div`
   margin-top: 20px;

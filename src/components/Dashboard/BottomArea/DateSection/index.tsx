@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import { MemoType } from "../../../../types/types";
 import { useSetAtom } from "jotai";
-import { dateAtom } from "../../../atoms/memoAtom";
 import Memo from "./Memo";
+import { MemoType } from "../../../../../types/types";
+import { dateAtom } from "../../../../atoms/memoAtom";
 
 const MemoGroup = styled.div`
   background-color: #ffe4e1;

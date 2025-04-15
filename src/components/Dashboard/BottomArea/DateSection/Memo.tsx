@@ -1,8 +1,9 @@
 import { useSetAtom } from "jotai";
-import { MemoType } from "../../../../types/types";
-import { deleteMemoAtom, toggleCheckedAtom } from "../../../atoms/memoAtom";
+
 import styled from "@emotion/styled";
 import CloseIcon from "@/assets/close.svg?react";
+import { MemoType } from "../../../../../types/types";
+import { deleteMemoAtom, toggleCheckedAtom } from "../../../../atoms/memoAtom";
 
 const MemoItem = styled.div`
   width: 100%;
