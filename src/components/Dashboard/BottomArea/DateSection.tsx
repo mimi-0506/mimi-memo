@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { MemoType } from "../../../types/types";
+import { MemoType } from "../../../../types/types";
 import { useSetAtom } from "jotai";
-import { dateAtom } from "../../atoms/memoAtom";
+import { dateAtom } from "../../../atoms/memoAtom";
 import Memo from "./Memo";
 
 const MemoGroup = styled.div`
@@ -35,7 +35,11 @@ export default function DateSection({
 
   return (
     <MemoGroup key={date}>
-      <DateButton data-date={date} onClick={handleDateClick}>
+      <DateButton
+        data-date={date}
+        onClick={handleDateClick}
+        title="해당 날짜 선택"
+      >
         {date}
       </DateButton>
       {memos.map((memo) => (

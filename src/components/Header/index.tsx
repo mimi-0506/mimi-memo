@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import CloseIcon from "@/assets/close.svg?react";
 
 const HeaderLayout = styled.header`
   -webkit-app-region: drag;
@@ -17,6 +18,15 @@ const HeaderLayout = styled.header`
   z-index: 9999;
 `;
 
+const CloseButton = styled.button`
+  width: 15x;
+  height: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function Header() {
   const handleClose = () => {
     window.electron?.ipcRenderer?.send("app-close");
@@ -24,7 +34,9 @@ export default function Header() {
 
   return (
     <HeaderLayout>
-      <button onClick={handleClose}>x</button>
+      <CloseButton onClick={handleClose}>
+        <CloseIcon width={"inherit"} height={"inherit"} />
+      </CloseButton>
     </HeaderLayout>
   );
 }

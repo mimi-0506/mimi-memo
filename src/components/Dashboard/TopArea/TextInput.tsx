@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { useRef } from "react";
-import { addMemoAtom, dateAtom } from "../../atoms/memoAtom";
+import { addMemoAtom, dateAtom } from "../../../atoms/memoAtom";
 import { useAtomValue, useSetAtom } from "jotai";
-import { createMemoFromInput } from "../../utils/inputUtils";
+import { createMemoFromInput } from "../../../utils/inputUtils";
 
 export const StyledTextarea = styled.textarea`
   width: 100%;
