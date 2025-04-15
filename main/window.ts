@@ -13,6 +13,7 @@ export function createMainWindow(pendingToken: string | null) {
     transparent: true,
     frame: false,
     vibrancy: "appearance-based",
+    hasShadow: false,
     webPreferences: {
       devTools: true,
       preload: path.join(__dirname, "preload.js"),
@@ -49,7 +50,7 @@ export function createMainWindow(pendingToken: string | null) {
   //배포 상태---------------------------------------------------
   if (process.env.NODE_ENV === "dev") {
     win.loadURL("http://localhost:5173");
-    //   win.webContents.openDevTools({ mode: "detach" });
+    win.webContents.openDevTools({ mode: "detach" });
   } else {
     win.loadFile(path.join(__dirname, "../index.html"));
   }

@@ -5,6 +5,7 @@ import { authAtom } from "./atoms/memoAtom";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import styled from "@emotion/styled";
+import ResizeHandle from "./components/ResizeHandle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,12 +13,11 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: start;
 
+  position: relative;
   overflow: hidden;
 
   height: 90vh;
   width: 90vw;
-
-  backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.7);
 
   border-radius: 20px;
@@ -30,6 +30,8 @@ function App() {
   return (
     <>
       <GlobalStyle />
+      <ResizeHandle direction="right" />
+      <ResizeHandle direction="bottom" />
       <Wrapper>
         <Header />
         {auth ? <Dashboard /> : <Auth />}

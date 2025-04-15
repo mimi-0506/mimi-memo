@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
-export const HeaderLayout = styled.header`
+const HeaderLayout = styled.header`
   -webkit-app-region: drag;
   width: 100%;
   height: 30px;
   background-color: pink;
   margin-bottom: 20px;
-  position: fixed;
+  position: absolute;
 
   display: flex;
   justify-content: flex-end;
