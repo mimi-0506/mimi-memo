@@ -1,10 +1,7 @@
 import styled from "@emotion/styled";
 import { useRef } from "react";
-import { MemoType } from "../../../types/types";
-import { addMemoAtom, dateAtom, memosAtom } from "../../atoms/memoAtom";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { v4 as uuidv4 } from "uuid";
-import { parseDateText, utilDateToString } from "../../utils/dateUtils";
+import { addMemoAtom, dateAtom } from "../../atoms/memoAtom";
+import { useAtomValue, useSetAtom } from "jotai";
 import { createMemoFromInput } from "../../utils/inputUtils";
 
 export const StyledTextarea = styled.textarea`
