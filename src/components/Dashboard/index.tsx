@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { scrollCoordAtom, scrollDateAtom } from "../../atoms/memoAtom";
 import { utilDateToString } from "../../utils/dateUtils";
 
@@ -52,7 +52,7 @@ export default function Dashboard() {
   useSaveBounds();
 
   const scrollCoord = useAtomValue(scrollCoordAtom);
-  const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
+  const setScrollDate = useSetAtom(scrollDateAtom);
 
   useEffect(() => {
     const today = utilDateToString(new Date());
@@ -61,10 +61,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (scrollCoord) {
-      console.log(scrollCoord.top - 50);
       setTimeout(() => {
         wrapperRef.current!.scrollTo({
-          top: scrollCoord.top - 50,
+          top: scrollCoord.top - 250,
           behavior: "smooth",
         });
       }, 0);

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Memo from "./Memo";
 import { MemoType } from "../../../../../types/types";
 import {
@@ -35,14 +35,21 @@ export default function DateSection({
   const ref = useRef<HTMLDivElement>(null);
 
   const scrollDate = useAtomValue(scrollDateAtom);
-  const setScroolCoord = useSetAtom(scrollCoordAtom);
+  const [scrollCoord, setScrollCoord] = useAtom(scrollCoordAtom);
 
   useEffect(() => {
     if (date === scrollDate && ref.current) {
       const rect = ref.current.getBoundingClientRect();
-      setScroolCoord(rect);
+      setScrollCoord(rect);
     }
   }, [scrollDate]);
+
+  useEffect(() => {
+    if (!scrollCoord && scrollDate && date === scrollDate && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      setScrollCoord(rect);
+    }
+  }, [scrollCoord, scrollDate]);
 
   const handleDateClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const date = e.currentTarget.dataset.date;
