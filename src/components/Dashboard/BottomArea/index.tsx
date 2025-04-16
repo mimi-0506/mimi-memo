@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useAtomValue } from "jotai";
 import { memosAtom } from "../../../atoms/memoAtom";
-import DateSection from "./DateSection";
+import MemoGroup from "./MemoGroup";
 
 const MemoList = styled.div`
   margin-top: 20px;
@@ -21,7 +21,7 @@ export default function BottomArea() {
       {Array.from(memos.entries())
         .sort()
         .map((data) => (
-          <DateSection data={data} key={data[0]} />
+          <MemoGroup data={data} key={data[0]} />
         ))}
     </MemoList>
   );

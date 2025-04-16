@@ -8,8 +8,9 @@ import {
   scrollDateAtom,
 } from "../../../../atoms/memoAtom";
 import { useEffect, useRef } from "react";
+import useGetMemoGroupCoord from "../../../../hook/useGetMemoGroupCoord";
 
-const MemoGroup = styled.div`
+const MemoGroupLayout = styled.div`
   background-color: #ffe4e1;
   padding: 10px;
   border-radius: 8px;
@@ -25,7 +26,7 @@ const DateButton = styled.button`
   margin-bottom: 5px;
 `;
 
-export default function DateSection({
+export default function MemoGroup({
   data,
 }: {
   data: [date: string, memos: MemoType[]];
@@ -33,23 +34,7 @@ export default function DateSection({
   const setDate = useSetAtom(dateAtom);
   const [date, memos] = data;
   const ref = useRef<HTMLDivElement>(null);
-
-  const scrollDate = useAtomValue(scrollDateAtom);
-  const [scrollCoord, setScrollCoord] = useAtom(scrollCoordAtom);
-
-  useEffect(() => {
-    if (date === scrollDate && ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setScrollCoord(rect);
-    }
-  }, [scrollDate]);
-
-  useEffect(() => {
-    if (!scrollCoord && scrollDate && date === scrollDate && ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setScrollCoord(rect);
-    }
-  }, [scrollCoord, scrollDate]);
+  useGetMemoGroupCoord(date, ref);
 
   const handleDateClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const date = e.currentTarget.dataset.date;
@@ -57,7 +42,7 @@ export default function DateSection({
   };
 
   return (
-    <MemoGroup key={date} ref={ref}>
+    <MemoGroupLayout key={date} ref={ref}>
       <DateButton
         data-date={date}
         onClick={handleDateClick}
@@ -68,6 +53,6 @@ export default function DateSection({
       {memos.map((memo) => (
         <Memo key={memo.id} memo={memo} />
       ))}
-    </MemoGroup>
+    </MemoGroupLayout>
   );
 }

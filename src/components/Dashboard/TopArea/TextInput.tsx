@@ -25,7 +25,7 @@ export default function TextInput() {
   const date = useAtomValue(dateAtom);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
-  const setScrollCoord = useSetAtom(scrollCoordAtom);
+  const [scrollCoord, setScrollCoord] = useAtom(scrollCoordAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -36,6 +36,7 @@ export default function TextInput() {
         if (newMemo) {
           addMemo(newMemo);
 
+          //해당 위치로 스크롤 이동 (같은 날짜는 coord위치 갱신을 위해 null을 주기 )
           if (newMemo.date === scrollDate) setScrollCoord(null);
           else setScrollDate(newMemo.date);
         }
