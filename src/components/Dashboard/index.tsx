@@ -3,10 +3,13 @@ import useSaveMemos from "../../hook/useSaveMemos";
 import styled from "@emotion/styled";
 import useLoadBounds from "../../hook/useLoadBounds";
 import useSaveBounds from "../../hook/useSaveBounds";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
+import { useAtom, useAtomValue } from "jotai";
+import { scrollCoordAtom, scrollDateAtom } from "../../atoms/memoAtom";
+import { utilDateToString } from "../../utils/dateUtils";
 
 export const Wrapper = styled.div`
   padding: 10px;
@@ -47,6 +50,26 @@ export default function Dashboard() {
   useSaveMemos();
   useLoadBounds();
   useSaveBounds();
+
+  const scrollCoord = useAtomValue(scrollCoordAtom);
+  const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
+
+  useEffect(() => {
+    const today = utilDateToString(new Date());
+    setScrollDate(today);
+  }, []);
+
+  useEffect(() => {
+    if (scrollCoord) {
+      console.log(scrollCoord.top - 50);
+      setTimeout(() => {
+        wrapperRef.current!.scrollTo({
+          top: scrollCoord.top - 50,
+          behavior: "smooth",
+        });
+      }, 0);
+    }
+  }, [scrollCoord]);
 
   return (
     <Wrapper ref={wrapperRef}>

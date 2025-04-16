@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useRef } from "react";
-import { addMemoAtom, dateAtom } from "../../../atoms/memoAtom";
-import { useAtomValue, useSetAtom } from "jotai";
+import { addMemoAtom, dateAtom, scrollDateAtom } from "../../../atoms/memoAtom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { createMemoFromInput } from "../../../utils/inputUtils";
 
 export const StyledTextarea = styled.textarea`
@@ -19,6 +19,7 @@ export default function TextInput() {
   const addMemo = useSetAtom(addMemoAtom);
   const date = useAtomValue(dateAtom);
   const textRef = useRef<HTMLTextAreaElement>(null);
+  const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -26,7 +27,12 @@ export default function TextInput() {
 
       if (textRef.current) {
         const newMemo = createMemoFromInput(textRef.current.value.trim(), date);
-        if (newMemo) addMemo(newMemo);
+        if (newMemo) {
+          addMemo(newMemo);
+
+          if (newMemo.date === scrollDate) {
+          } else setScrollDate(newMemo.date);
+        }
         textRef.current.value = "";
       }
     }

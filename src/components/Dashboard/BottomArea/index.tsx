@@ -15,6 +15,7 @@ const MemoList = styled.div`
 
 export default function BottomArea() {
   const memos = useAtomValue(memosAtom);
+
   return (
     <MemoList>
       {Array.from(memos.entries())

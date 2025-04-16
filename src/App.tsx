@@ -5,7 +5,7 @@ import { authAtom } from "./atoms/memoAtom";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import styled from "@emotion/styled";
-import ResizeHandle from "./components/ResizeHandle";
+import ResizeHandle from "./components/Hitbox";
 
 const Wrapper = styled.div`
   display: flex;

@@ -106,3 +106,9 @@ export const dateAtom = atom<string>(utilDateToString(new Date()));
 
 // ✅ 사용자 인증 상태 atom
 export const authAtom = atom<AuthType | null>(null);
+
+// ✅ 선택된 날짜 (스크롤 대상)
+export const scrollDateAtom = atom<string | null>(null);
+
+// ✅ 스크롤할 좌표 (해당 날짜의 위치)
+export const scrollCoordAtom = atom<DOMRect | null>(null);
