@@ -6,9 +6,20 @@ export type MemoType = {
   id: string;
 };
 
+export type IndexedMemoType = {
+  index: string;
+  text: string;
+  id: string;
+};
+
 export type MemoDirectoryType = {
   memos: MemoType[];
   date: string;
+};
+
+export type IndexedMemoDirectoryType = {
+  indexedMemos: IndexedMemoType[];
+  index: string;
 };
 
 export type AuthType = { uid: string; email: string | null };
