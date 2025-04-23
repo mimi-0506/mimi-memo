@@ -16,3 +16,11 @@ export function getLatestMemosDocRef(userId: string) {
 export function getLatestBoundsDocRef(userId: string) {
   return doc(db, "users", userId, "bounds", "latest");
 }
+
+/**
+ * 사용자의 latest indexs 문서 경로를 반환
+ * @param userId Firebase Auth의 uid
+ */
+export function getLatestIndexesDocRef(userId: string) {
+  return doc(db, "users", userId, "indexes", "latest");
+}
