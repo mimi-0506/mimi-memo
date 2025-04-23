@@ -8,6 +8,8 @@ import {
 } from "../../../atoms/memoAtom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { createMemoFromInput } from "../../../utils/inputUtils";
+import { isMemoType } from "../../../utils/typeUtils";
+import { addIndexedMemoAtom } from "../../../atoms/indexedMemoAtom";
 
 export const StyledTextarea = styled.textarea`
   width: 100%;
@@ -26,6 +28,7 @@ export default function TextInput() {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
   const [scrollCoord, setScrollCoord] = useAtom(scrollCoordAtom);
+  const addIndexedMemo = useSetAtom(addIndexedMemoAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -33,13 +36,16 @@ export default function TextInput() {
 
       if (textRef.current) {
         const newMemo = createMemoFromInput(textRef.current.value.trim(), date);
-        if (newMemo) {
+
+        if (isMemoType(newMemo)) {
           addMemo(newMemo);
 
-          //해당 위치로 스크롤 이동 (같은 날짜는 coord위치 갱신을 위해 null을 주기 )
           if (newMemo.date === scrollDate) setScrollCoord(null);
           else setScrollDate(newMemo.date);
+        } else if (newMemo) {
+          addIndexedMemo(newMemo);
         }
+
         textRef.current.value = "";
       }
     }
