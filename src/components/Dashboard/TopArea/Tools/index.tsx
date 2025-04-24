@@ -15,6 +15,9 @@ const Button = styled.button`
   width: 25px;
   height: 25px;
   position: relative;
+  * {
+    display: block;
+  }
 `;
 
 const HiddenColorInput = styled.input`

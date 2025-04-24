@@ -1,27 +1,37 @@
 import { useRef } from "react";
 import { utilDateToString } from "../../../utils/dateUtils";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { dateAtom } from "../../../atoms/memoAtom";
 import styled from "@emotion/styled";
+import { colorAtom } from "../../../atoms/uiAtom";
+import { Overlay } from "../../common";
 
-export const SelectorWrapper = styled.button``;
+const SelectorWrapper = styled.button``;
 
-export const DateDisplay = styled.div`
+const DateDisplay = styled.div<{ color: string }>`
   display: inline-block;
-  padding: 8px 12px;
-  background-color: #eee;
+  position: relative;
+  padding: 5px 12px;
+  background-color: ${({ color }) => color};
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
+  overflow: hidden;
 `;
 
-export const HiddenInput = styled.input`
+const DateText = styled.span`
+  position: relative;
+  z-index: 2;
+`;
+
+const HiddenInput = styled.input`
   position: absolute;
   opacity: 0;
   pointer-events: none;
 `;
 
 export default function DaySelector() {
+  const { mainColor } = useAtomValue(colorAtom);
   const [date, setDate] = useAtom(dateAtom);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +45,10 @@ export default function DaySelector() {
 
   return (
     <SelectorWrapper>
-      <DateDisplay onClick={handleClick}>{date}</DateDisplay>
+      <DateDisplay onClick={handleClick} color={mainColor}>
+        <Overlay />
+        <DateText>{date}</DateText>
+      </DateDisplay>
       <HiddenInput ref={inputRef} type="date" onChange={handleChange} />
     </SelectorWrapper>
   );

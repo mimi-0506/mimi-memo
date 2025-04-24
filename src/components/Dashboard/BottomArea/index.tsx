@@ -9,7 +9,7 @@ import {
 import IndexedMemoGroup from "./IndexedMemoGroup";
 
 const MemoList = styled.div`
-  margin-top: 20px;
+  margin-top: 35px;
   display: grid;
   gap: 15px;
   display: flex;

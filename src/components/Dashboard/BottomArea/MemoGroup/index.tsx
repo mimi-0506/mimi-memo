@@ -6,6 +6,7 @@ import { dateAtom } from "../../../../atoms/memoAtom";
 import { useRef } from "react";
 import useGetMemoGroupCoord from "../../../../hook/useGetMemoGroupCoord";
 import { colorAtom } from "../../../../atoms/uiAtom";
+import { Overlay } from "../../../common";
 
 const MemoGroupLayout = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
@@ -19,16 +20,6 @@ const MemoGroupLayout = styled.div<{ color: string }>`
   width: 100%;
   position: relative;
   box-sizing: border-box;
-`;
-
-const Overlay = styled.div`
-  width: 110%;
-  height: 110%;
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  background-color: rgba(255, 255, 255, 0.5);
-  z-index: 1;
 `;
 
 const DateButton = styled.button`

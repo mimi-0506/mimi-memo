@@ -12,8 +12,9 @@ import {
   createMemoFromInput,
 } from "../../../utils/inputUtils";
 import { addIndexedMemoAtom } from "../../../atoms/indexedMemoAtom";
+import { colorAtom } from "../../../atoms/uiAtom";
 
-export const StyledTextarea = styled.textarea`
+export const StyledTextarea = styled.textarea<{ color: string }>`
   width: 100%;
   padding: 8px;
   font-size: 1rem;
@@ -22,9 +23,14 @@ export const StyledTextarea = styled.textarea`
   border-radius: 4px;
   font-family: inherit;
   height: 80px;
+
+  outline-color: ${({ color }) => color};
+  resize: none;
+  margin-top: 5px;
 `;
 
 export default function TextInput() {
+  const { mainColor } = useAtomValue(colorAtom);
   const addMemo = useSetAtom(addMemoAtom);
   const date = useAtomValue(dateAtom);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -47,7 +53,7 @@ export default function TextInput() {
           return;
         } else {
           const newMemo = createMemoFromInput(input, date);
-          console.log(newMemo);
+
           if (newMemo) {
             addMemo(newMemo);
 
@@ -66,6 +72,7 @@ export default function TextInput() {
       ref={textRef}
       onKeyDown={handleKeyDown}
       rows={5}
+      color={mainColor}
       placeholder="Type something and press Enter to submit"
     />
   );
