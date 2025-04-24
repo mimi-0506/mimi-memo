@@ -8,17 +8,20 @@ const RightEdge = styled.div`
   z-index: 9999;
   pointer-events: auto;
   top: 60px;
-  left: calc(5vw + 90vw);
+  left: 90vw;
   width: 8px;
   height: 85%;
   cursor: ew-resize;
+
+  background: red;
 `;
 
 const BottomEdge = styled.div`
+  background: blue;
   position: absolute;
   z-index: 9999;
   pointer-events: auto;
-  top: calc(5vh + 90vh);
+  top: 95vh;
   left: 5vw;
   height: 8px;
   width: 90%;
