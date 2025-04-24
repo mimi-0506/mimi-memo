@@ -12,12 +12,9 @@ const RightEdge = styled.div`
   width: 8px;
   height: 85%;
   cursor: ew-resize;
-
-  background: red;
 `;
 
 const BottomEdge = styled.div`
-  background: blue;
   position: absolute;
   z-index: 9999;
   pointer-events: auto;
@@ -28,7 +25,7 @@ const BottomEdge = styled.div`
   cursor: ns-resize;
 `;
 
-export default function ResizeHandle({ direction }: { direction: Direction }) {
+export default function ResizeHitbox({ direction }: { direction: Direction }) {
   const isDragging = useRef(false);
   const startRef = useRef(0);
   const baseRef = useRef(0);
