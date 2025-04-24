@@ -1,13 +1,9 @@
 import styled from "@emotion/styled";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import Memo from "./Memo";
 import { MemoType } from "../../../../../types/types";
-import {
-  dateAtom,
-  scrollCoordAtom,
-  scrollDateAtom,
-} from "../../../../atoms/memoAtom";
-import { useEffect, useRef } from "react";
+import { dateAtom } from "../../../../atoms/memoAtom";
+import { useRef } from "react";
 import useGetMemoGroupCoord from "../../../../hook/useGetMemoGroupCoord";
 
 const MemoGroupLayout = styled.div`
