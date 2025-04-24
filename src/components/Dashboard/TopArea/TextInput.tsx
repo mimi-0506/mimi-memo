@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   addMemoAtom,
   dateAtom,
@@ -35,10 +35,13 @@ export default function TextInput() {
   const date = useAtomValue(dateAtom);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [scrollDate, setScrollDate] = useAtom(scrollDateAtom);
-  const [scrollCoord, setScrollCoord] = useAtom(scrollCoordAtom);
+  const setScrollCoord = useSetAtom(scrollCoordAtom);
   const addIndexedMemo = useSetAtom(addIndexedMemoAtom);
+  const [isComposing, setIsComposing] = useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isComposing) return; // 한글 조합 중이면 무시
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
 
@@ -48,29 +51,36 @@ export default function TextInput() {
         if (input.startsWith("#")) {
           const newIndexedMemo = createIndexedMemoFromInput(input);
           addIndexedMemo(newIndexedMemo);
-          textRef.current.value = "";
-          //왜인지 여기서 자꾸 if문과 else문을 같이 탐.. 조기 리턴으로 해결.
-          return;
         } else {
           const newMemo = createMemoFromInput(input, date);
+          console.log(newMemo);
 
           if (newMemo) {
             addMemo(newMemo);
 
             if (newMemo.date === scrollDate) setScrollCoord(null);
             else setScrollDate(newMemo.date);
-
-            textRef.current.value = "";
           }
         }
+        textRef.current.value = "";
       }
     }
+  };
+
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  const handleCompositionEnd = () => {
+    setIsComposing(false);
   };
 
   return (
     <StyledTextarea
       ref={textRef}
       onKeyDown={handleKeyDown}
+      onCompositionStart={handleCompositionStart}
+      onCompositionEnd={handleCompositionEnd}
       rows={5}
       color={mainColor}
       placeholder="Type something and press Enter to submit"
