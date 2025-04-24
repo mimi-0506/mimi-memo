@@ -14,7 +14,6 @@ export default function GlobalStyle() {
         html,
         body {
           font-family: "Pretendard", sans-serif;
-          background-color: #fff;
           color: #111;
           line-height: 1.5;
           -webkit-font-smoothing: antialiased;

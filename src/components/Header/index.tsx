@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
 import CloseIcon from "@/assets/close.svg?react";
+import { useAtomValue } from "jotai";
+import { colorAtom } from "../../atoms/uiAtom";
 
-const HeaderLayout = styled.header`
+const HeaderLayout = styled.header<{ color: string }>`
   -webkit-app-region: drag;
   width: 100%;
   height: 30px;
-  background-color: pink;
+  background-color: ${({ color }) => color};
   margin-bottom: 20px;
   position: absolute;
 
@@ -28,12 +30,13 @@ const CloseButton = styled.button`
 `;
 
 export default function Header() {
+  const { mainColor } = useAtomValue(colorAtom);
   const handleClose = () => {
     window.electron?.ipcRenderer?.send("app-close");
   };
 
   return (
-    <HeaderLayout>
+    <HeaderLayout color={mainColor}>
       <CloseButton onClick={handleClose}>
         <CloseIcon width={"inherit"} height={"inherit"} />
       </CloseButton>

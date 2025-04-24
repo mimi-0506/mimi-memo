@@ -4,6 +4,7 @@ import ColorIcon from "@/assets/color.svg?react";
 import { useSetAtom } from "jotai";
 import { deleteEmptyAtom } from "../../../../atoms/memoAtom";
 import { useRef } from "react";
+import { colorAtom } from "../../../../atoms/uiAtom";
 
 const ToolLayout = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ export default function Tools() {
   const deleteEmpty = useSetAtom(deleteEmptyAtom);
   const colorInputRef = useRef<HTMLInputElement>(null);
   const pickerOpenRef = useRef(false);
+  const setColor = useSetAtom(colorAtom);
 
   const handleClickMainColorChangeButton = () => {
     if (pickerOpenRef.current) {
@@ -43,6 +45,7 @@ export default function Tools() {
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedColor = e.target.value;
     console.log("🎨 선택된 색상 코드:", selectedColor);
+    setColor({ mainColor: selectedColor, sideColor: selectedColor });
   };
 
   return (
