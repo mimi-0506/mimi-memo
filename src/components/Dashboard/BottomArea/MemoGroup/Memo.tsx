@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 
 import styled from "@emotion/styled";
-import CloseIcon from "@/assets/close.svg?react";
+import DeleteIcon from "@/assets/delete.svg?react";
 import { MemoType } from "../../../../../types/types";
 import { deleteMemoAtom, toggleCheckedAtom } from "../../../../atoms/memoAtom";
 
@@ -58,7 +58,7 @@ export default function Memo({ memo }: { memo: MemoType }) {
         </MemoText>
       </MemoLeft>
       <button onClick={handleMemoDeleteClick}>
-        <CloseIcon />
+        <DeleteIcon />
       </button>
     </MemoItem>
   );
