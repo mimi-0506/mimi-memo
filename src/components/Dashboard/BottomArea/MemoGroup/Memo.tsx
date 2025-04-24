@@ -30,6 +30,9 @@ const MemoText = styled.span<{ checked: boolean; important: boolean }>`
   text-decoration: ${({ checked }) => (checked ? "line-through" : "none")};
   font-weight: ${({ important }) => (important ? "bold" : "normal")};
   white-space: pre-wrap;
+  pointer-events: auto;
+  cursor: pointer;
+  display: "inline-block";
 `;
 
 const Button = styled.button`
@@ -50,6 +53,11 @@ export default function Memo({ memo }: { memo: MemoType }) {
     memoDelete(memo);
   };
 
+  const handleTextClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const text = e.currentTarget.textContent || "";
+    navigator.clipboard.writeText(text);
+  };
+
   return (
     <MemoItem>
       <MemoLeft>
@@ -58,7 +66,12 @@ export default function Memo({ memo }: { memo: MemoType }) {
           checked={memo.checked}
           onChange={handleCheckClick}
         />
-        <MemoText checked={memo.checked} important={memo.important}>
+        <MemoText
+          title={"클릭시 복사"}
+          onClick={handleTextClick}
+          checked={memo.checked}
+          important={memo.important}
+        >
           {memo.text}
         </MemoText>
       </MemoLeft>
