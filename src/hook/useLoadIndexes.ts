@@ -1,46 +1,49 @@
 import { useEffect } from "react";
 import { getDoc } from "firebase/firestore";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom, useAtomValue } from "jotai";
 import { authAtom } from "../atoms/memoAtom";
-import { getLatestIndexesDocRef } from "../lib/firestoreRefs";
-import { loadIndexedMemosAtom } from "../atoms/indexedMemoAtom";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 import { IndexedMemoType } from "../../types/types";
+import { loadIndexedMemosAtom } from "../atoms/indexedMemoAtom";
 
 /**
- * Firestore에서 인덱스 메모를 가져오는 훅
+ * 유저 인증 상태에 따라 Firestore에서 indexedMemos 데이터를 불러와 jotai atom에 저장하는 훅
+ * user별로 초기 1회만 진행
  */
-export default function useLoadIndexes() {
-  const user = useAtomValue(authAtom);
+export default function useLoadMemos() {
   const setLoadIndexedMemos = useSetAtom(loadIndexedMemosAtom);
+  const user = useAtomValue(authAtom);
 
   useEffect(() => {
     if (!user) return;
 
-    const loadIndexes = async () => {
+    const loadIndexedMemos = async () => {
       try {
-        const docSnap = await getDoc(getLatestIndexesDocRef(user.uid));
-
-        if (!docSnap.exists()) {
-          console.info("ℹ️ indexes 문서가 존재하지 않음.");
-          return;
-        }
-
-        const data = docSnap.data();
-        if (!data.bounds) {
-          console.warn("⚠️ 'indexes' 필드가 존재하지 않음.");
-          return;
-        }
-
-        const parsedIndexes = JSON.parse(data.bounds);
-        const parsedMap: Map<string, IndexedMemoType[]> = new Map(
-          Object.entries(parsedIndexes)
+        const snapshot = await getDoc(
+          getLatestDocRef(user.uid, "indexedMemos")
         );
-        setLoadIndexedMemos(parsedMap);
+
+        if (!snapshot.exists()) {
+          console.info("indexedMemos 문서가 존재하지 않음");
+          return;
+        }
+
+        const data = snapshot.data();
+        const raw = data.indexedMemos;
+
+        if (!raw) {
+          console.warn("'indexedMemos' 필드가 존재하지 않음");
+          return;
+        }
+
+        const parsed: Record<string, IndexedMemoType[]> = JSON.parse(raw);
+        const mapped = new Map(Object.entries(parsed));
+        setLoadIndexedMemos(mapped);
       } catch (error) {
-        console.error("indexes 불러오기 실패:", error);
+        console.error("indexedMemos 불러오기 실패", error);
       }
     };
 
-    loadIndexes();
-  }, [user]);
+    loadIndexedMemos();
+  }, [user, setLoadIndexedMemos]);
 }

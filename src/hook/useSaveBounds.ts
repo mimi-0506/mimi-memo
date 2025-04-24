@@ -4,7 +4,7 @@ import { useAtomValue } from "jotai";
 import { setDoc } from "firebase/firestore";
 import { authAtom } from "../atoms/memoAtom";
 import { IpcRendererTyped } from "../../types/ipc";
-import { getLatestBoundsDocRef } from "../lib/firestoreRefs";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 
 /**
  * Electron 윈도우 위치(bounds)가 변경될 때 Firestore에 저장하는 훅
@@ -23,7 +23,7 @@ export default function useBoundsSave() {
       bounds: Rectangle
     ) => {
       try {
-        await setDoc(getLatestBoundsDocRef(user.uid), {
+        await setDoc(getLatestDocRef(user.uid, "bounds"), {
           bounds: JSON.stringify(bounds),
           updatedAt: new Date(),
         });

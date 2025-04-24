@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { authAtom } from "../atoms/memoAtom";
-import { getLatestBoundsDocRef } from "../lib/firestoreRefs";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 
 /**
  * Firestore에서 위치 및 창 크기 정보를 불러와 적용하는 훅
@@ -15,7 +15,7 @@ export default function useLoadBounds() {
 
     const loadBounds = async () => {
       try {
-        const docSnap = await getDoc(getLatestBoundsDocRef(user.uid));
+        const docSnap = await getDoc(getLatestDocRef(user.uid, "bounds"));
 
         if (!docSnap.exists()) {
           console.info("ℹ️ bounds 문서가 존재하지 않음.");

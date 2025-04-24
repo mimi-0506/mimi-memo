@@ -1,14 +1,14 @@
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-import { authAtom, memosAtom } from "../atoms/memoAtom";
+import { authAtom } from "../atoms/memoAtom";
 import { debounce } from "lodash";
-import { IndexedMemoType, MemoType } from "../../types/types";
+import { IndexedMemoType } from "../../types/types";
 import { setDoc } from "firebase/firestore";
-import { getLatestMemosDocRef } from "../lib/firestoreRefs";
 import { indexedMemosAtom } from "../atoms/indexedMemoAtom";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 
 /**
- * indexed indexedMemos 상태가 변경될 때 Firebase에 저장하는 훅
+ * indexedMemos 상태가 변경될 때 Firebase에 저장하는 훅
  */
 export default function useSaveIndexes() {
   const user = useAtomValue(authAtom);
@@ -20,10 +20,10 @@ export default function useSaveIndexes() {
     const debouncedSaveMemos = debounce(
       async (indexedMemos: Map<string, IndexedMemoType[]>) => {
         try {
-          const memosObj = Object.fromEntries(indexedMemos);
+          const indexedMemosObj = Object.fromEntries(indexedMemos);
 
-          await setDoc(getLatestMemosDocRef(user.uid), {
-            indexedMemos: JSON.stringify(memosObj),
+          await setDoc(getLatestDocRef(user.uid, "indexedMemos"), {
+            indexedMemos: JSON.stringify(indexedMemosObj),
             updatedAt: new Date(),
           });
         } catch (error) {

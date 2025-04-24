@@ -7,6 +7,8 @@ import { useRef } from "react";
 import TopArea from "./TopArea";
 import BottomArea from "./BottomArea";
 import useScrollMove from "../../hook/useScrollMove";
+import useLoadIndexes from "../../hook/useLoadIndexes";
+import useSaveIndexes from "../../hook/useSaveIndexes";
 
 export const Wrapper = styled.div`
   padding: 10px;
@@ -47,6 +49,8 @@ export default function Dashboard() {
   useSaveMemos();
   useLoadBounds();
   useSaveBounds();
+  useLoadIndexes();
+  useSaveIndexes();
   useScrollMove(wrapperRef);
 
   return (

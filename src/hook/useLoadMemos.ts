@@ -3,7 +3,7 @@ import { getDoc } from "firebase/firestore";
 import { useSetAtom, useAtomValue } from "jotai";
 import { MemoType } from "../../types/types";
 import { authAtom, loadMemosAtom } from "../atoms/memoAtom";
-import { getLatestMemosDocRef } from "../lib/firestoreRefs";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 
 /**
  * 유저 인증 상태에 따라 Firestore에서 memos 데이터를 불러와 jotai atom에 저장하는 훅
@@ -16,10 +16,9 @@ export default function useLoadMemos() {
   useEffect(() => {
     if (!user) return;
 
-    // Firestore에서 memos 문서 불러오기
     const loadMemos = async () => {
       try {
-        const snapshot = await getDoc(getLatestMemosDocRef(user.uid));
+        const snapshot = await getDoc(getLatestDocRef(user.uid, "memos"));
 
         if (!snapshot.exists()) {
           console.info("memos 문서가 존재하지 않음");

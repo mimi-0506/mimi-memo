@@ -23,6 +23,7 @@ const Button = styled.button`
 const HiddenColorInput = styled.input`
   width: 1px;
   height: 1px;
+  border: none;
 `;
 
 export default function Tools() {

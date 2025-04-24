@@ -4,7 +4,7 @@ import { authAtom, memosAtom } from "../atoms/memoAtom";
 import { debounce } from "lodash";
 import { MemoType } from "../../types/types";
 import { setDoc } from "firebase/firestore";
-import { getLatestMemosDocRef } from "../lib/firestoreRefs";
+import { getLatestDocRef } from "../lib/firestoreRefs";
 
 /**
  * memos 상태가 변경될 때 Firebase에 저장하는 훅
@@ -21,7 +21,7 @@ export default function useSaveMemos() {
         try {
           const memosObj = Object.fromEntries(memos);
 
-          await setDoc(getLatestMemosDocRef(user.uid), {
+          await setDoc(getLatestDocRef(user.uid, "memos"), {
             memos: JSON.stringify(memosObj),
             updatedAt: new Date(),
           });
