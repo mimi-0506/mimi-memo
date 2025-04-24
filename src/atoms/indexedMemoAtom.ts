@@ -51,4 +51,5 @@ export const loadIndexedMemosAtom = atom(
   }
 );
 
+// ✅ 6. 현재 선택된 인덱스 atom
 export const indexedStateAtom = atom<string | null>(null);

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { IndexedMemoType } from "../../../../../types/types";
-import IndexedMemo from "./indexedMemo";
+import IndexedMemo from "./IndexedMemo";
 
 const MemoGroupLayout = styled.div`
   padding: 10px;

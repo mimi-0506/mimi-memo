@@ -20,7 +20,6 @@ const MemoItem = styled.div`
 
 const MemoText = styled.span`
   white-space: pre-wrap;
-  border: 1px solid black;
 `;
 
 const Button = styled.button`
