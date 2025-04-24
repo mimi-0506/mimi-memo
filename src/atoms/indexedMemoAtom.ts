@@ -50,3 +50,5 @@ export const loadIndexedMemosAtom = atom(
     set(baseIndexedMemosAtom, map);
   }
 );
+
+export const indexedStateAtom = atom<string | null>(null);
