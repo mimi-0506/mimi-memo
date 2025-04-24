@@ -53,9 +53,10 @@ export const extractImportant = (
  * extractIndex('#finance 투자 관련 메모') // { index: 'finance', text: '투자 관련 메모' }
  */
 export const extractIndex = (input: string) => {
+  const index = input.slice(1).trim().split(" ")[0];
   return {
-    index: input.slice(1).trim().split(" ")[0],
-    text: input.slice(1).trim(),
+    index,
+    text: input.slice(index.length + 1).trim(),
   };
 };
 
@@ -72,11 +73,11 @@ export const extractIndex = (input: string) => {
 export const createMemoFromInput = (
   rawInput: string,
   fallbackDate: string
-): MemoType | IndexedMemoType | null => {
+): MemoType | null => {
   let input = rawInput.trim();
   if (input === "") return null;
 
-  let returnValue: MemoType | IndexedMemoType = {
+  const returnValue: MemoType = {
     text: input,
     date: fallbackDate,
     checked: false,
@@ -86,14 +87,14 @@ export const createMemoFromInput = (
 
   if (input.startsWith("!")) {
     const extractedValue = extractImportant(input);
-    returnValue = { ...returnValue, ...extractedValue };
+    return { ...returnValue, ...extractedValue };
   } else if (input.startsWith("@")) {
     const extractedValue = extractDateFromInput(input, fallbackDate);
-    returnValue = { ...returnValue, ...extractedValue };
-  } else if (input.startsWith("#")) {
-    const extractedValue = extractIndex(input);
-    returnValue = { id: returnValue.id, ...extractedValue };
-  }
+    return { ...returnValue, ...extractedValue };
+  } else return returnValue;
+};
 
-  return returnValue;
+export const createIndexedMemoFromInput = (input: string) => {
+  const extractedValue = extractIndex(input);
+  return { id: uuidv4(), ...extractedValue };
 };

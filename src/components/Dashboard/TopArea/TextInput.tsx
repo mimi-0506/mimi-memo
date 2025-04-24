@@ -7,8 +7,10 @@ import {
   scrollDateAtom,
 } from "../../../atoms/memoAtom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { createMemoFromInput } from "../../../utils/inputUtils";
-import { isMemoType } from "../../../utils/typeUtils";
+import {
+  createIndexedMemoFromInput,
+  createMemoFromInput,
+} from "../../../utils/inputUtils";
 import { addIndexedMemoAtom } from "../../../atoms/indexedMemoAtom";
 
 export const StyledTextarea = styled.textarea`
@@ -35,18 +37,26 @@ export default function TextInput() {
       e.preventDefault();
 
       if (textRef.current) {
-        const newMemo = createMemoFromInput(textRef.current.value.trim(), date);
+        const input = textRef.current.value.trim();
 
-        if (isMemoType(newMemo)) {
-          addMemo(newMemo);
+        if (input.startsWith("#")) {
+          const newIndexedMemo = createIndexedMemoFromInput(input);
+          addIndexedMemo(newIndexedMemo);
+          textRef.current.value = "";
+          //왜인지 여기서 자꾸 if문과 else문을 같이 탐.. 조기 리턴으로 해결.
+          return;
+        } else {
+          const newMemo = createMemoFromInput(input, date);
+          console.log(newMemo);
+          if (newMemo) {
+            addMemo(newMemo);
 
-          if (newMemo.date === scrollDate) setScrollCoord(null);
-          else setScrollDate(newMemo.date);
-        } else if (newMemo) {
-          addIndexedMemo(newMemo);
+            if (newMemo.date === scrollDate) setScrollCoord(null);
+            else setScrollDate(newMemo.date);
+
+            textRef.current.value = "";
+          }
         }
-
-        textRef.current.value = "";
       }
     }
   };
