@@ -13,9 +13,8 @@ const MemoItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   padding: 8px;
-  background-color: #f7f7f7;
+  background-color: white;
   border-radius: 4px;
-  border: 1px solid #eee;
 `;
 
 const MemoLeft = styled.div`
@@ -31,6 +30,12 @@ const MemoText = styled.span<{ checked: boolean; important: boolean }>`
   text-decoration: ${({ checked }) => (checked ? "line-through" : "none")};
   font-weight: ${({ important }) => (important ? "bold" : "normal")};
   white-space: pre-wrap;
+`;
+
+const Button = styled.button`
+  * {
+    display: block;
+  }
 `;
 
 export default function Memo({ memo }: { memo: MemoType }) {
@@ -57,9 +62,9 @@ export default function Memo({ memo }: { memo: MemoType }) {
           {memo.text}
         </MemoText>
       </MemoLeft>
-      <button onClick={handleMemoDeleteClick}>
+      <Button onClick={handleMemoDeleteClick}>
         <DeleteIcon />
-      </button>
+      </Button>
     </MemoItem>
   );
 }
