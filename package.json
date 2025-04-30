@@ -25,36 +25,7 @@
     "certificatePassword": null
   },
   "config": {
-    "forge": {
-      "makers": [
-        {
-          "name": "@electron-forge/maker-dmg",
-          "platforms": [
-            "darwin"
-          ],
-          "config": {
-            "icon": "assets/icon.icns",
-            "format": "ULFO",
-            "overwrite": true
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "platforms": [
-            "win32"
-          ],
-          "config": {
-            "setupIcon": "assets/icon.ico"
-          }
-        }
-      ]
-    }
+    "forge": "./forge.config.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
