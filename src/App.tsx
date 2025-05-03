@@ -28,7 +28,8 @@ const AppWindow = styled.main`
   z-index: 2;
 
   height: 90vh;
-  width: 90vw;
+  width: 86vw;
+  margin-left: 5px;
   background: rgba(255, 255, 255, 0.7);
   border-radius: 20px;
   box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.8);
