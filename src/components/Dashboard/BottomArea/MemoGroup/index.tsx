@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import Memo from "./Memo";
 import { MemoType } from "../../../../../types/types";
 import { dateAtom } from "../../../../atoms/memoAtom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useGetMemoGroupCoord from "../../../../hook/useGetMemoGroupCoord";
 import { colorAtom } from "../../../../atoms/uiAtom";
 import { Overlay } from "../../../common";
@@ -42,6 +42,7 @@ export default function MemoGroup({
   const { mainColor } = useAtomValue(colorAtom);
   const setDate = useSetAtom(dateAtom);
   const [date, memos] = data;
+  const justChangeRef = useRef(null);
   const ref = useRef<HTMLDivElement>(null);
   useGetMemoGroupCoord(date, ref);
 
@@ -62,7 +63,7 @@ export default function MemoGroup({
           {date}
         </DateButton>
         {memos.map((memo) => (
-          <Memo key={memo.id} memo={memo} />
+          <Memo key={memo.id} memo={memo} justChangeRef={justChangeRef} />
         ))}
       </Content>
     </MemoGroupLayout>

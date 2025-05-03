@@ -4,19 +4,26 @@ import useAuth from "../../hook/useAuth";
 import { useState } from "react";
 
 const Container = styled.div`
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 32px;
-  border-radius: 12px;
-  background-color: #f8f8f8;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
 `;
 
 const Spinner = styled.div`
-  width: 24px;
-  height: 24px;
-  border: 3px solid #ccc;
-  border-top: 3px solid #333;
+  width: 50px;
+  height: 50px;
+  border: 10px solid white;
+  border-top: 10px solid pink;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
@@ -43,7 +50,7 @@ export default function Auth() {
       {isLoading ? (
         <Spinner />
       ) : (
-        <button onClick={handleGoogleLoginClick}>Google로 로그인</button>
+        <Button onClick={handleGoogleLoginClick}>Google로 로그인</Button>
       )}
     </Container>
   );
