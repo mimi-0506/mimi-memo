@@ -34,7 +34,7 @@ export default function useAuth() {
   useEffect(() => {
     if (window.electron?.onAuthToken) {
       window.electron.onAuthToken((token: string) => {
-        alert(`토큰 받기 성공`);
+        alert("로그인 성공");
         applyToken(token);
       });
     }
