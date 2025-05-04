@@ -2,8 +2,11 @@ import { app } from "electron";
 import { createMainWindow, win } from "./window";
 import { setupIpc } from "./ipcHandlers";
 import { setupSingleInstance } from "./singleInstance";
+import dotenv from "dotenv";
+import path from "path";
 
 let pendingToken: string | null = null;
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
 //앱 여러 개 실행 방지
 if (!setupSingleInstance({ current: pendingToken })) {
