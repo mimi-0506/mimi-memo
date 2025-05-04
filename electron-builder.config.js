@@ -7,6 +7,9 @@ module.exports = {
     output: "dist/build",
   },
   files: [
+    "dist/**/*",
+    "assets/**/*",
+    "preload.js",
     "dist/main/**",
     "dist/renderer/**",
     "node_modules/**",
