@@ -1,0 +1,62 @@
+{
+  "name": "electron",
+  "author": "mimi",
+  "private": true,
+  "version": "0.0.0",
+  "description": "mimi-memo",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "kill": "node ./scripts/kill-port.js",
+    "dev": "pnpm run kill && pnpm run build:main && concurrently \"pnpm run start:vite\" \"pnpm run start:electron\"",
+    "start:vite": "vite",
+    "start:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=dev node $(pwd)/node_modules/electron/cli.js dist/main/main.js",
+    "build:main": "tsc -p ./tsconfig.main.json",
+    "build:ui": "vite build",
+    "build": "pnpm run build:main && pnpm run build:ui",
+    "make": "pnpm run build && electron-builder --config electron-builder.config.js",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "win": {
+    "target": "nsis",
+    "sign": false,
+    "certificateFile": null,
+    "certificatePassword": null
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "date-fns": "^4.1.0",
+    "electron-is-dev": "^3.0.1",
+    "electron-squirrel-startup": "^1.0.1",
+    "emotion-reset": "^3.0.1",
+    "firebase": "^11.6.0",
+    "jotai": "^2.12.2",
+    "lodash": "^4.17.21",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@electron/fuses": "^1.8.0",
+    "@eslint/js": "^9.21.0",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^35.2.2",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "wait-on": "^8.0.3"
+  }
+}
